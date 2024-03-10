@@ -72,9 +72,9 @@ class Link(Generic[N]):
     tail: N
     """The node this link comes from."""
 
-    def __init__(self, head: Node, tail: Node) -> None:
-        head.add_incoming(self)
+    def __init__(self, tail: N, head: N) -> None:
         tail.add_outgoing(self)
+        head.add_incoming(self)
 
     def remove(self) -> None:
         """Removes this link by removing it from both connected nodes."""
