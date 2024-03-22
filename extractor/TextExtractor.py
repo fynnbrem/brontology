@@ -50,7 +50,7 @@ class WikipediaExtractor(Extractor):
         return texts
 
 # Erstellt eine Instanz der WikipediaExtractor-Klasse
-extractor = WikipediaExtractor('https://de.wikipedia.org/wiki/Python_(Programmiersprache)', 0)
+extractor = WikipediaExtractor('https://de.wikipedia.org/wiki/Python_(Programmiersprache)', 1)
 
 # Ruft die extract-Methode auf, um die Texte zu extrahieren
 texts = extractor.extract()
