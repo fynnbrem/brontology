@@ -8,6 +8,8 @@ from brontology.relation_extraction.types import TokenRelation
 
 
 def extract_passive_voice_relation(verb: Token) -> Optional[TokenRelation]:
+    """Extracts a passive voice relation starting on the verb.
+    Returns `None` if the verb is no passive voice."""
     if not any(child.dep == auxpass for child in verb.children):
         # Filter: The verb is no passive if it lacks an auxiliary passive verb.
         return None

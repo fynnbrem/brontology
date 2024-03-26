@@ -1,8 +1,10 @@
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, Iterable
 
+import spacy
 from spacy.tokens import Span, Token
 
+from brontology.config import MODEL_TYPE
 from brontology.utils.color import A
 
 
@@ -18,3 +20,6 @@ def highlight_token_in_span(span: Span, tokens: Token | Iterable[Token], style: 
             token_texts.append(token.text_with_ws)
     text: str = "".join(token_texts)
     return text
+
+
+MODEL = spacy.load(MODEL_TYPE)
