@@ -1,5 +1,5 @@
 """This module contains sample sentences, accessible as `Doc` and `str`."""
-from enum import StrEnum
+from enum import StrEnum, Enum
 from pathlib import Path
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, TYPE_CHECKING
@@ -12,7 +12,7 @@ BIN_FOLDER = Path(__file__).parent / "bin"
 """The folder where all binary data gets stored."""
 
 
-class SentenceEnum(StrEnum):
+class SentenceEnum(Enum):
     """A base class for Enums used to store sentences used as `Doc`.
     Supports lazy loading for the contained `Doc`.
 
