@@ -6,7 +6,7 @@ from spacy.parts_of_speech import VERB
 from spacy.tokens import Span, Token
 
 from brontology.relation_extraction.relation_types.passive_voice import extract_passive_voice_relation
-from brontology.relation_extraction.types import TokenRelation
+from brontology.relation_extraction.model import TokenRelation
 from brontology.utils.color import A
 
 PROCESSORS: list[Callable[[Token], TokenRelation | None]] = list()

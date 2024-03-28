@@ -1,33 +1,66 @@
+from dataclasses import dataclass
 # noinspection PyUnresolvedReferences
-from typing import Union, Optional, List, Tuple
+from typing import Union, Optional, List, Tuple, Self
 from random import choice
 from math import sqrt
+
+from spacy.tokens import Token
+
 from brontology.graph.node import Node, Link
 
-Vector = Tuple[float]
+
+@dataclass(frozen=True, slots=True)
+class Lemma:
+    """The lemma of a word, including its POS-tag. Should be instantiated via `.from_token`"""
+    lemma_: str
+    lemma: int
+    pos_: str
+    pos: int
+
+    @classmethod
+    def from_token(cls, token: Token):
+        """Instantiate this class from a spacy-token."""
+        return cls(
+            lemma_=token.lemma_,
+            lemma=token.lemma,
+            pos_=token.pos_,
+            pos=token.pos,
+        )
+
+    def __eq__(self, other: Union["Lemma", Token]) -> bool:
+        if not isinstance(other, (Lemma, Token)):
+            return NotImplemented
+        return (self.lemma, self.pos) == (other.lemma, other.pos)
+
 
 class Synset:
-    def __init__(self, embeddings: List[Vector]):
-        self.embeddings = embeddings
-        self.center = self.calculate_center()
-        self.repr = self.get_representative_word()
+    """A group a similar words, each identified by its `Lemma`."""
 
-    def calculate_center(self) -> Vector:
-        # Berechnung des Zentrums der Vektoren
-        return tuple(sum(x) / len(x) for x in zip(*self.embeddings))
+    def __init__(self):
+        self.members: list[Lemma] = list()
 
-    def get_representative_word(self) -> str:
-        # Auswahl eines repräsentativen Wortes (in diesem Fall zufällig)
-        return str(choice(self.embeddings))
+    def __str__(self) -> str:
+        """A random word from this synset."""
+        return str(choice(self.members))
 
-    def distance(self, other_synset: "Synset") -> float:
-        # Berechnung der euklidischen Distanz zu einem anderen Synset
-        return sqrt(sum((c1 - c2) ** 2 for c1, c2 in zip(self.center, other_synset.center)))
+    def __contains__(self, item: Lemma | Token):
+        return (item in self.members)
+
+    def add_member(self, member: Lemma | Token):
+        """Adds a member to this synset. This can be either a `Token` or `Lemma`.
+        `Token` will be automatically converted into a `Lemma`."""
+        if isinstance(member, Token):
+            member = Lemma.from_token(member)
+        self.members.append(member)
 
 
 class Entity(Node["Relation"]):
     """An entity of the ontology defined by its synset."""
     synset: Synset
+
+    def __init__(self):
+        super().__init__()
+        self.synset = Synset()
 
 
 class Relation(Link[Entity]):
@@ -36,7 +69,7 @@ class Relation(Link[Entity]):
     synset: Synset
     source: str
 
-    def __init__(self, synset: Synset, source: str, head: Entity, tail: Entity) -> None:
+    def __init__(self, source: str, head: Entity, tail: Entity) -> None:
         super().__init__(head=head, tail=tail)
-        self.synset = synset
         self.source = source
+        self.synset = Synset()
