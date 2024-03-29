@@ -2,6 +2,7 @@
 from typing import Union, Optional
 
 import en_core_web_trf
+from spacy.tokens import Token
 
 from brontology.graph.root import Graph
 from brontology.relation_extraction.delegator import get_main_verbs, extract_relation
@@ -24,5 +25,7 @@ for verb in verbs:
     except ValueError:
         ...
 
+
 for relation in relations:
     graph.add_relation(relation)
+print(graph)
