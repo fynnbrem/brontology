@@ -32,6 +32,9 @@ class Lemma:
             return NotImplemented
         return (self.lemma, self.pos) == (other.lemma, other.pos)
 
+    def __str__(self):
+        return '"' + self.lemma_ + '"'
+
 
 class Synset:
     """A group a similar words, each identified by its `Lemma`."""
@@ -41,7 +44,10 @@ class Synset:
 
     def __str__(self) -> str:
         """A random word from this synset."""
-        return str(choice(self.members))
+        if len(self.members) > 0:
+            return str(choice(self.members))
+        else:
+            return "EMPTY"
 
     def __contains__(self, item: Lemma | Token):
         return (item in self.members)
@@ -62,6 +68,10 @@ class Entity(Node["Relation"]):
         super().__init__()
         self.synset = Synset()
 
+    def __repr__(self):
+        return f"<{self.__class__.__qualname__}: {str(self.synset)}>"
+
+
 
 class Relation(Link[Entity]):
     """A relation between two entities defined by predicate (expressed as synset).
@@ -73,3 +83,13 @@ class Relation(Link[Entity]):
         super().__init__(head=head, tail=tail)
         self.source = source
         self.synset = Synset()
+
+    def __str__(self):
+        items = [
+            str(item.synset) if item is not None else "???"
+            for item in [self.tail, self, self.tail]
+        ]
+        return " → ".join(items)
+
+    def __repr__(self):
+        return f"<{self.__class__.__qualname__}: {str(self)}>"

@@ -1,6 +1,7 @@
-from contextvars import Token
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
+
+from spacy.tokens import Token
 
 from brontology.graph.entity import Entity, Relation, Synset
 from brontology.relation_extraction.model import TokenRelation

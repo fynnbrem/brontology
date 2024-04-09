@@ -161,3 +161,4 @@ cython_debug/
 
 # Sandbox
 sandbox.ipynb
+sandbox.py
