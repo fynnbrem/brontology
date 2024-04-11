@@ -2,11 +2,10 @@ from dataclasses import dataclass
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, List, Tuple, Self
 from random import choice
-from math import sqrt
 
 from spacy.tokens import Token
 
-from brontology.graph.node import Node, Link
+from brontology.graph.node import Node, Link, NO_CONTENT
 
 
 @dataclass(frozen=True, slots=True)
@@ -47,7 +46,7 @@ class Synset:
         if len(self.members) > 0:
             return str(choice(self.members))
         else:
-            return "EMPTY"
+            return "#EMPTY"
 
     def __contains__(self, item: Lemma | Token):
         return (item in self.members)
@@ -60,27 +59,35 @@ class Synset:
         self.members.append(member)
 
 
-class Entity(Node["Relation"]):
+class Entity(Node["Relation", Synset]):
     """An entity of the ontology defined by its synset."""
     synset: Synset
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, content: Synset = NO_CONTENT):
+        super().__init__(content=content)
         self.synset = Synset()
 
     def __repr__(self):
         return f"<{self.__class__.__qualname__}: {str(self.synset)}>"
 
+    @property
+    def synset(self):
+        """The synset of this entity. Equal to `.content`."""
+        return self.content
+
+    @synset.setter
+    def synset(self, value):
+        self.content = value
 
 
-class Relation(Link[Entity]):
+class Relation(Link[Entity, Synset]):
     """A relation between two entities defined by predicate (expressed as synset).
     Also contains the source if this information."""
     synset: Synset
     source: str
 
-    def __init__(self, source: str, head: Entity, tail: Entity) -> None:
-        super().__init__(head=head, tail=tail)
+    def __init__(self, source: str, head: Entity, tail: Entity, content=NO_CONTENT) -> None:
+        super().__init__(head=head, tail=tail, content=content)
         self.source = source
         self.synset = Synset()
 
@@ -93,3 +100,12 @@ class Relation(Link[Entity]):
 
     def __repr__(self):
         return f"<{self.__class__.__qualname__}: {str(self)}>"
+
+    @property
+    def synset(self):
+        """The synset of this relation. Equal to `.content`."""
+        return self.content
+
+    @synset.setter
+    def synset(self, value):
+        self.content = value
