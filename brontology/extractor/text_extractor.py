@@ -6,7 +6,7 @@ import textwrap
 
 class Extractor(ABC):
     @abstractmethod
-    def extract(self):
+    def extract(self) -> List['Text']:
         pass
 
 class Text:
@@ -25,7 +25,7 @@ class WikipediaExtractor(Extractor):
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Entfernt alle sup-Tags, die Einzelnachweise enthalten (Zahlen hinter Text)
+        # Removes all sup tags containing citations (numbers after text)
         for sup in soup.find_all('sup'):
             sup.decompose()
 
@@ -42,7 +42,7 @@ texts = extractor.extract()
 
 with open('extracted_texts.txt', 'w', encoding='utf-8') as f:
     for text in texts:
-        # Text bündig machen
-        wrapper = textwrap.TextWrapper(width=120)  # Anpassbare Breite
+        # Make text concise
+        wrapper = textwrap.TextWrapper(width=120)  # Customisable width
         bundig_content = wrapper.fill(text.content)
         f.write(f'Source: {text.source}\nContent: {bundig_content}\n\n')
