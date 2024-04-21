@@ -4,7 +4,7 @@ from typing import Union, Optional
 from spacy.symbols import auxpass, agent, nsubjpass, pobj
 from spacy.tokens import Token
 
-from brontology.relation_extraction.types import TokenRelation
+from brontology.relation_extraction.model import TokenRelation
 
 
 def extract_passive_voice_relation(verb: Token) -> Optional[TokenRelation]:
