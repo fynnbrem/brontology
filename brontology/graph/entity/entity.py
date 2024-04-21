@@ -5,7 +5,8 @@ from random import choice
 
 from spacy.tokens import Token
 
-from brontology.graph.node import Node, Link, NO_CONTENT
+from brontology.graph.base.node import Node, Link, NO_CONTENT
+from brontology.graph.iterable.node import IterableNode, IterableLink
 
 
 @dataclass(frozen=True, slots=True)
@@ -59,7 +60,7 @@ class Synset:
         self.members.append(member)
 
 
-class Entity(Node["Relation", Synset]):
+class Entity(IterableNode["Relation", Synset, Lemma]):
     """An entity of the ontology defined by its synset."""
     synset: Synset
 
@@ -80,7 +81,7 @@ class Entity(Node["Relation", Synset]):
         self.content = value
 
 
-class Relation(Link[Entity, Synset]):
+class Relation(IterableLink[Entity, Synset, Lemma]):
     """A relation between two entities defined by predicate (expressed as synset).
     Also contains the source if this information."""
     synset: Synset

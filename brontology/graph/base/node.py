@@ -1,5 +1,5 @@
 # noinspection PyUnresolvedReferences
-from typing import Union, Optional, TypeVar, Generic, Self
+from typing import Union, Optional, TypeVar, Generic, Self, Iterable
 
 L = TypeVar("L", bound="Link")
 C = TypeVar("C")
