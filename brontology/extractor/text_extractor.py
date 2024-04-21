@@ -36,13 +36,14 @@ class WikipediaExtractor(Extractor):
             content = ''
 
         return [Text(url, content)]
+    
+if __name__ == "__main__":
+    extractor = WikipediaExtractor('https://de.wikipedia.org/wiki/Python_(Programmiersprache)')
+    texts = extractor.extract()
 
-extractor = WikipediaExtractor('https://de.wikipedia.org/wiki/Python_(Programmiersprache)')
-texts = extractor.extract()
-
-with open('extracted_texts.txt', 'w', encoding='utf-8') as f:
-    for text in texts:
-        # Make text concise
-        wrapper = textwrap.TextWrapper(width=120)  # Customisable width
-        bundig_content = wrapper.fill(text.content)
-        f.write(f'Source: {text.source}\nContent: {bundig_content}\n\n')
+    with open('extracted_texts.txt', 'w', encoding='utf-8') as f:
+        for text in texts:
+            # Make text concise
+            wrapper = textwrap.TextWrapper(width=120)  # Customisable width
+            bundig_content = wrapper.fill(text.content)
+            f.write(f'Source: {text.source}\nContent: {bundig_content}\n\n')
