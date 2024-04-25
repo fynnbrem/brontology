@@ -31,12 +31,12 @@ class Node(Generic[L, C]):
         return tuple(self._outgoing)
 
     @property
-    def incoming_nodes(self) -> tuple[Self, ...]:
+    def tail_nodes(self) -> tuple[Self, ...]:
         """The nodes that have links pointing to this node."""
         return tuple(link.tail for link in self.incoming)
 
     @property
-    def outgoing_nodes(self) -> tuple[Self, ...]:
+    def head_nodes(self) -> tuple[Self, ...]:
         """The nodes that this node's links point to."""
         return tuple(link.head for link in self.outgoing)
 

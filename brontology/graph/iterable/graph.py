@@ -54,7 +54,7 @@ class IterableGraph(Generic[N, L, M]):
         # region: Find a tail node.
         # In contrast to the head,
         # do not try to find a matching incoming link as it would have already been found above.
-        head_node = self.get_node_by_member(tail)
+        head_node = self.get_node_by_member(head)
         # endregion
 
         # region: Create missing nodes.
@@ -71,7 +71,7 @@ class IterableGraph(Generic[N, L, M]):
         # endregion
         return relation_link
 
-    def create_node(self, members: Iterable[M]):
+    def create_node(self, members: Iterable[M]) -> N:
         """Creates a new node with the members in this graph.
         Returns the newly created node.
 
