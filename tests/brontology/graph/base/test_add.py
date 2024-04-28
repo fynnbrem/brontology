@@ -1,7 +1,7 @@
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
-from brontology.graph.node import Node, Link
+from brontology.graph.base.node import Node, Link
 
 
 def test_add_link() -> None:
