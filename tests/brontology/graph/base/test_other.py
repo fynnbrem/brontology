@@ -24,6 +24,6 @@ def test_outgoing_nodes() -> None:
     assert all(neighbour in node.head_nodes for neighbour in neighbours)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_incoming_nodes()
     test_outgoing_nodes()

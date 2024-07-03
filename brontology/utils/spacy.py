@@ -8,7 +8,9 @@ from brontology.config import MODEL_TYPE
 from brontology.utils.color import A
 
 
-def highlight_token_in_span(span: Span, tokens: Token | Iterable[Token], style: str = A.bold) -> str:
+def highlight_token_in_span(
+    span: Span, tokens: Token | Iterable[Token], style: str = A.bold
+) -> str:
     """Highlights all `tokens` with the ANSI `style`"""
     token_texts: list[str] = list()
     for token in span:

@@ -1,7 +1,6 @@
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, TypeVar, Iterable, Generic, Type
 
-from brontology.graph.base.node import NO_CONTENT
 from brontology.graph.iterable.node import IterableNode, IterableLink, C
 
 L = TypeVar("L", bound=IterableLink)
@@ -41,9 +40,8 @@ class IterableGraph(Generic[N, L, M]):
         relation_link: Optional[L] = None
         if tail_node is not None:
             for outgoing_relation in tail_node.outgoing:
-                if (
-                        (link in outgoing_relation.content) and
-                        (head in outgoing_relation.head.content)
+                if (link in outgoing_relation.content) and (
+                    head in outgoing_relation.head.content
                 ):
                     relation_link = outgoing_relation
                     break

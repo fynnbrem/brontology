@@ -18,5 +18,5 @@ class EntityGraph(IterableGraph[Entity, Relation, Lemma]):
         self.add_link_by_member(
             Lemma.from_token(relation.tail),
             Lemma.from_token(relation.predicate),
-            Lemma.from_token(relation.head)
+            Lemma.from_token(relation.head),
         )

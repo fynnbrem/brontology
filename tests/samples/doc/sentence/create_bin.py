@@ -1,5 +1,6 @@
 """This script must be run to refresh the binary data required by this package.
 All previous data gets cleared and all existing subclasses of `SentenceEnum` will get their binary data generated."""
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
@@ -20,5 +21,5 @@ def main():
             doc.to_disk(member.file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

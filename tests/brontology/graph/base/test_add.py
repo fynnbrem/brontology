@@ -1,3 +1,5 @@
+import warnings
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
@@ -30,7 +32,6 @@ def test_add_outgoing() -> None:
     """Adds an outgoing link to a node, expecting it no be registered on that node."""
     node: Node = Node()
     link: Link = Link(Node(), Node())
-
     node.add_outgoing(link)
     assert link in node.outgoing
 
@@ -61,7 +62,7 @@ def test_switch_link_tail() -> None:
     assert link.tail is node_2
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_add_link()
     test_add_incoming()
     test_add_outgoing()

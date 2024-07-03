@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, List, Tuple, Self
 from random import choice
@@ -12,6 +13,7 @@ from brontology.graph.iterable.node import IterableNode, IterableLink, M
 @dataclass(frozen=True, slots=True)
 class Lemma:
     """The lemma of a word, including its POS-tag. Should be instantiated via `.from_token`"""
+
     lemma_: str
     lemma: int
     pos_: str
@@ -50,7 +52,7 @@ class Synset:
             return "#EMPTY"
 
     def __contains__(self, item: Lemma | Token):
-        return (item in self.members)
+        return item in self.members
 
     def add_member(self, member: Lemma | Token):
         """Adds a member to this synset. This can be either a `Token` or `Lemma`.
@@ -62,6 +64,7 @@ class Synset:
 
 class Entity(IterableNode["Relation", Synset, Lemma]):
     """An entity of the ontology defined by its synset."""
+
     synset: Synset
 
     def __init__(self, content: Synset = NO_CONTENT):
@@ -88,6 +91,7 @@ class Entity(IterableNode["Relation", Synset, Lemma]):
 class Relation(IterableLink[Entity, Synset, Lemma]):
     """A relation between two entities defined by predicate (expressed as synset).
     Also contains the source if this information."""
+
     synset: Synset
     source: str
 
@@ -117,4 +121,3 @@ class Relation(IterableLink[Entity, Synset, Lemma]):
     def add_member(self, member: Lemma):
         """Adds the `member` to the synset."""
         self.synset.add_member(member)
-

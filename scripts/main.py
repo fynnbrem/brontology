@@ -9,7 +9,7 @@ from brontology.relation_extraction.model import TokenRelation
 from tests.samples.text import SAMPLE_4 as SAMPLE
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     graph = EntityGraph()
 

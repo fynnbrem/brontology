@@ -36,6 +36,3 @@ def extract_passive_voice_relation(verb: Token) -> Optional[TokenRelation]:
             break
 
     return TokenRelation(tail, verb, head)
-
-
-

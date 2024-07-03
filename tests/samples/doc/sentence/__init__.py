@@ -1,6 +1,8 @@
 """This module contains sample sentences, accessible as `Doc` and `str`."""
+
 from enum import StrEnum, Enum
 from pathlib import Path
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, TYPE_CHECKING
 
@@ -17,7 +19,9 @@ class SentenceEnum(Enum):
     Supports lazy loading for the contained `Doc`.
 
     The `Doc`s get loaded from binary files.
-    After creating new sentences, refresh these files with the `create_bin.py`-module."""
+    After creating new sentences, refresh these files with the `create_bin.py`-module.
+    """
+
     _doc: Doc
 
     @property
@@ -42,6 +46,7 @@ class SentenceEnum(Enum):
 
 class Passive(SentenceEnum):
     """Passive sentences."""
+
     default = "The tree was felled by the lumberjack."
     no_actor = "The tree was felled."
     auxiliary = "The tree has been felled by the lumberjack."
@@ -61,8 +66,9 @@ v1 = "eat"
 v2 = "climb"
 v3 = "need"
 
+
 class MinimalClause(SentenceEnum):
     """Minimal sentences, consisting just of subject-verb-object."""
+
     s_1_1_2 = construct_minimal_clause(n1, v1, n2)
     s_2_1_1 = construct_minimal_clause(n2, v1, n1)
-

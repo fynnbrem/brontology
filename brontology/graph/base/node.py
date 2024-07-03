@@ -74,6 +74,7 @@ class Link(Generic[N, C]):
         The node this link points to. This link will be registered on that node.
     :param tail:
         The node this link comes from. This link will be registered on that node."""
+
     head: N
     """The node this link points to."""
     tail: N

@@ -18,6 +18,5 @@ def extract_direct_object_relation(verb):
         return None
     if subj is None:
         return None
-    
+
     return TokenRelation(subj, verb, dobj)
-    

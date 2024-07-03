@@ -1,4 +1,5 @@
 from itertools import chain
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
@@ -64,7 +65,7 @@ def test_remove_nonexistent() -> None:
         raise AssertionError()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_remove_link()
     test_remove_incoming()
     test_remove_outgoing()
