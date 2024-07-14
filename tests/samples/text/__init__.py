@@ -1,4 +1,5 @@
 from pathlib import Path
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 

@@ -1,12 +1,17 @@
 from enum import Enum, Flag, auto, IntEnum
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, Callable
 
 from spacy.parts_of_speech import VERB
 from spacy.tokens import Span, Token
 
-from brontology.relation_extraction.relation_types.direct_object import extract_direct_object_relation
-from brontology.relation_extraction.relation_types.passive_voice import extract_passive_voice_relation
+from brontology.relation_extraction.relation_types.direct_object import (
+    extract_direct_object_relation,
+)
+from brontology.relation_extraction.relation_types.passive_voice import (
+    extract_passive_voice_relation,
+)
 from brontology.relation_extraction.model import TokenRelation
 from brontology.utils.color import A
 
@@ -41,7 +46,7 @@ def extract_relation(verb: Token) -> TokenRelation:
 add_processor(extract_passive_voice_relation)
 add_processor(extract_direct_object_relation)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from tests.samples.text import SAMPLE_1 as SAMPLE
     import en_core_web_trf
     from brontology.utils.spacy import highlight_token_in_span

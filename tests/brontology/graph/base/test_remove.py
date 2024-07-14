@@ -1,8 +1,9 @@
 from itertools import chain
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
-from brontology.graph.node import Node, Link
+from brontology.graph.base.node import Node, Link
 
 
 def test_remove_link() -> None:
@@ -64,7 +65,7 @@ def test_remove_nonexistent() -> None:
         raise AssertionError()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_remove_link()
     test_remove_incoming()
     test_remove_outgoing()

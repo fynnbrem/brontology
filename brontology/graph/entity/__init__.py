@@ -1,4 +1,4 @@
+"""A graph where the content is a entity defined by its synset."""
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
-
-MODEL_TYPE = "en_core_web_trf"
