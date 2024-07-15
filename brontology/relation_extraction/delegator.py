@@ -1,4 +1,3 @@
-# noinspection PyUnresolvedReferences
 from typing import Union, Optional, Callable
 
 from spacy.parts_of_speech import VERB

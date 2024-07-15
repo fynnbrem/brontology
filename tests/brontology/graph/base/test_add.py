@@ -1,4 +1,3 @@
-# noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
 from brontology.graph.base.node import Node, Link

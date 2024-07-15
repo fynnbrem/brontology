@@ -2,7 +2,8 @@
 
 from enum import Enum
 from pathlib import Path
-# noinspection PyUnresolvedReferences
+
+
 from typing import Union, Optional, TYPE_CHECKING
 
 from spacy.tokens import Doc

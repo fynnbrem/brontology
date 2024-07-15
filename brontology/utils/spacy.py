@@ -1,4 +1,3 @@
-# noinspection PyUnresolvedReferences
 from typing import Union, Optional, Iterable
 
 import spacy

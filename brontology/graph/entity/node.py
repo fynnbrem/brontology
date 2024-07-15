@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from random import choice
-# noinspection PyUnresolvedReferences
+
+
 from typing import Union, Optional, List, Tuple, Self
 
 from spacy.tokens import Token

@@ -1,4 +1,3 @@
-# noinspection PyUnresolvedReferences
 from typing import Union, Optional
 
 import en_core_web_trf

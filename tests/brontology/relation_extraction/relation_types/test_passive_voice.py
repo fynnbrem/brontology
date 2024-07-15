@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-# noinspection PyUnresolvedReferences
+
 from typing import Union, Optional
 
 from spacy.tokens import Span

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-# noinspection PyUnresolvedReferences
+
 from typing import Union, Optional
 
 file_dir: Path = Path(__file__).parent

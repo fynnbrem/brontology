@@ -2,7 +2,8 @@
 All previous data gets cleared and all existing subclasses of `SentenceEnum` will get their binary data generated."""
 
 import shutil
-# noinspection PyUnresolvedReferences
+
+
 from typing import Union, Optional
 
 from brontology.utils.spacy import MODEL
