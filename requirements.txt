@@ -1,3 +1,6 @@
+# Python Technical
+pydantic==2.6.4
+
 # Scraping
 beautifulsoup4==4.12.3
 requests==2.31.0
