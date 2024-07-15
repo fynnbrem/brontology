@@ -1,4 +1,4 @@
-from typing import Union, Optional, TypeVar, Generic, Self, Iterable
+from typing import TypeVar, Generic, Self
 
 L = TypeVar("L", bound="Link")
 C = TypeVar("C")

@@ -1,4 +1,4 @@
-from typing import Union, Optional, Callable
+from typing import Optional, Callable
 
 from spacy.parts_of_speech import VERB
 from spacy.tokens import Span, Token

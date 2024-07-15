@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from random import choice
-
-
-from typing import Union, Optional, List, Tuple, Self
+from typing import Union
 
 from spacy.tokens import Token
 

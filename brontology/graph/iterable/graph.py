@@ -1,4 +1,4 @@
-from typing import Union, Optional, TypeVar, Iterable, Generic, Type
+from typing import Optional, TypeVar, Iterable, Generic, Type
 
 from brontology.graph.iterable.node import IterableNode, IterableLink, C
 

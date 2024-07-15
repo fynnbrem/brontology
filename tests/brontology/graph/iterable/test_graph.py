@@ -1,5 +1,3 @@
-from typing import Union, Optional
-
 from brontology.graph.iterable.graph import IterableGraph
 from brontology.graph.iterable.node import IterableNode, IterableLink
 

@@ -1,8 +1,5 @@
 from pathlib import Path
 
-
-from typing import Union, Optional
-
 file_dir: Path = Path(__file__).parent
 
 SAMPLE_1: str = open(file_dir / "sample_1.txt").read()

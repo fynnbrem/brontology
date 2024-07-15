@@ -1,5 +1,3 @@
-from typing import Union, Optional
-
 import en_core_web_trf
 
 from brontology.graph.entity.graph import EntityGraph

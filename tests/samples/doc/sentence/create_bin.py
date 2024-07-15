@@ -3,10 +3,7 @@ All previous data gets cleared and all existing subclasses of `SentenceEnum` wil
 
 import shutil
 
-
-from typing import Union, Optional
-
-from brontology.utils.spacy import MODEL
+from brontology.config import Model
 from tests.samples.doc.sentence import SentenceEnum, BIN_FOLDER
 
 
@@ -17,7 +14,7 @@ def main():
     for implementation in SentenceEnum.__subclasses__():
         for member in implementation:
             member: SentenceEnum
-            doc = MODEL(member.value)
+            doc = Model.inst(member.value)
             member.file.parent.mkdir(parents=True, exist_ok=True)
             doc.to_disk(member.file)
 

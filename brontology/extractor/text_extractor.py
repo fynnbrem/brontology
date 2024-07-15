@@ -1,13 +1,22 @@
 from abc import ABC, abstractmethod
 
+import en_core_web_trf
 import requests
 from bs4 import BeautifulSoup
+from spacy.tokens import Doc
 
 
 class Text:
     def __init__(self, source: str, content: str):
         self.source: str = source
         self.plain: str = content
+        self._doc: Doc | None = None
+
+    @property
+    def doc(self):
+        if self._doc is None:
+            self._doc = en_core_web_trf.load()
+        return self._doc
 
 
 class Extractor(ABC):

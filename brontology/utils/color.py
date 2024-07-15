@@ -1,9 +1,6 @@
 from enum import StrEnum
 
 
-from typing import Union, Optional
-
-
 class ANSI(StrEnum):
     """ANSI color codes."""
 
