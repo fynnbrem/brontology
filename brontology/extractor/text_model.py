@@ -1,18 +1,22 @@
 """The data models for extracted text."""
 
 import webbrowser
+from dataclasses import dataclass, field
 
-from pydantic import BaseModel, Field
 from spacy.tokens import Doc, Span
 
 from brontology.config import Model
 
 
-class Text(BaseModel):
+@dataclass
+class Text:
+    """Test extracted by the extractor. Stores its source, plaintext and spacy doc."""
+
     source_link: str
     plain: str
 
-    _doc: Doc | None = Field(default=None)
+    _doc: Doc | None = field(default=None, init=False)
+    """The document generated from the plaintext. Use `.doc` for lazy loaded access."""
 
     @property
     def doc(self):
@@ -26,7 +30,8 @@ class Text(BaseModel):
         webbrowser.open(self.source_link)
 
 
-class Excerpt(BaseModel):
+@dataclass
+class Excerpt:
     """An excerpt from a document that can be used to display the source of some information."""
 
     origin: Text
