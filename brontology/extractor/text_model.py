@@ -2,17 +2,17 @@
 
 import webbrowser
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from spacy.tokens import Doc, Span
 
 from brontology.config import Model
 
 
-class Text:
-    def __init__(self, source_link: str, plain: str):
-        self.source_link: str = source_link
-        self.plain: str = plain
-        self._doc: Doc | None = None
+class Text(BaseModel):
+    source_link: str
+    plain: str
+
+    _doc: Doc | None = Field(default=None)
 
     @property
     def doc(self):
@@ -30,12 +30,12 @@ class Excerpt(BaseModel):
     """An excerpt from a document that can be used to display the source of some information."""
 
     origin: Text
-    span_range: slice
+    slice: slice
 
     @property
     def span(self) -> Span:
         """The span of the excerpt."""
-        return self.origin.doc[self.span_range]
+        return self.origin.doc[self.slice]
 
     @property
     def plain(self) -> str:
