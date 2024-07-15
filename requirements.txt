@@ -1,4 +1,10 @@
+# Scraping
+beautifulsoup4==4.12.3
+requests==2.31.0
+
+# NLP
 spacy==3.7.4
 en-core-web-trf@https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.7.3/en_core_web_trf-3.7.3-py3-none-any.whl#sha256=f72abb34bdf174876bd4267b29b2501677e605e0a251fdc56c163003182ed68b
 
+# Misc
 -e .

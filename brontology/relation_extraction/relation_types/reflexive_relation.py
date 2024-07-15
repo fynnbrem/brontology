@@ -1,6 +1,9 @@
 from typing import Optional
+
 from spacy.tokens import Token
+
 from brontology.relation_extraction.model import TokenRelation
+
 
 def extract_reflexive_relation(verb: Token) -> Optional[TokenRelation]:
     doc = nlp(sentence)

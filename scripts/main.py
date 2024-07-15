@@ -8,7 +8,6 @@ from brontology.relation_extraction.delegator import get_main_verbs, extract_rel
 from brontology.relation_extraction.model import TokenRelation
 from tests.samples.text import SAMPLE_4 as SAMPLE
 
-
 if __name__ == "__main__":
 
     graph = EntityGraph()

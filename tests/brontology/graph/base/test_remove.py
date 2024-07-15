@@ -1,5 +1,4 @@
 from itertools import chain
-
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 

@@ -1,8 +1,7 @@
 """This module contains sample sentences, accessible as `Doc` and `str`."""
 
-from enum import StrEnum, Enum
+from enum import Enum
 from pathlib import Path
-
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional, TYPE_CHECKING
 
