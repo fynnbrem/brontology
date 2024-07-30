@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 from random import choice
 from typing import Union
+from random import choice
+
+# noinspection PyUnresolvedReferences
+from typing import Union, Optional, List, Tuple, Self
 
 from spacy.tokens import Token
 
@@ -73,12 +77,12 @@ class Entity(IterableNode["Relation", Synset, Lemma]):
         return f"<{self.__class__.__qualname__}: {str(self.synset)}>"
 
     @property
-    def synset(self):
+    def synset(self) -> Synset:
         """The synset of this entity. Equal to `.content`."""
         return self.content
 
     @synset.setter
-    def synset(self, value):
+    def synset(self, value: Synset):
         self.content = value
 
     def add_member(self, member: Lemma):

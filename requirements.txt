@@ -1,6 +1,7 @@
 # Python Technical
 pydantic==2.6.4
 python-dotenv==1.0.1
+tqdm
 
 # Web Scraping
 beautifulsoup4==4.12.3
@@ -9,6 +10,9 @@ requests==2.31.0
 # Language Processing
 spacy==3.7.4
 en-core-web-trf@https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.7.3/en_core_web_trf-3.7.3-py3-none-any.whl#sha256=f72abb34bdf174876bd4267b29b2501677e605e0a251fdc56c163003182ed68b
+
+# Database
+neo4j==5.23.0
 
 # Misc
 -e .
