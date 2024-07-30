@@ -1,5 +1,4 @@
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional, TypeVar, Iterable, Generic
+from typing import TypeVar, Iterable, Generic
 
 from brontology.graph.base.node import Node, Link
 

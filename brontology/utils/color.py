@@ -1,7 +1,4 @@
-from enum import Enum, StrEnum
-
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional
+from enum import StrEnum
 
 
 class ANSI(StrEnum):

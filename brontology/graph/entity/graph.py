@@ -1,6 +1,3 @@
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional
-
 from brontology.graph.entity.node import Entity, Relation, Lemma
 from brontology.graph.iterable.graph import IterableGraph
 from brontology.relation_extraction.model import TokenRelation

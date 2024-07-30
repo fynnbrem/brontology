@@ -1,30 +1,25 @@
 from abc import ABC, abstractmethod
-from typing import List
-from bs4 import BeautifulSoup
+
 import requests
-import textwrap
+from bs4 import BeautifulSoup
+
+from brontology.extractor.text_model import Text
 
 
 class Extractor(ABC):
     @abstractmethod
-    def extract(self) -> List["Text"]:
+    def extract(self) -> Text:
         pass
-
-
-class Text:
-    def __init__(self, source: str, content: str):
-        self.source = source
-        self.content = content
 
 
 class WikipediaExtractor(Extractor):
     def __init__(self, url: str):
         self.url = url
 
-    def extract(self) -> List[Text]:
+    def extract(self) -> Text:
         return self._extract_page(self.url)
 
-    def _extract_page(self, url: str) -> List[Text]:
+    def _extract_page(self, url: str) -> Text:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
 
@@ -38,18 +33,11 @@ class WikipediaExtractor(Extractor):
         else:
             content = ""
 
-        return [Text(url, content)]
+        return Text(url, content)
 
 
 if __name__ == "__main__":
-    extractor = WikipediaExtractor(
-        "https://de.wikipedia.org/wiki/Python_(Programmiersprache)"
-    )
-    texts = extractor.extract()
-
-    with open("extracted_texts.txt", "w", encoding="utf-8") as f:
-        for text in texts:
-            # Make text concise
-            wrapper = textwrap.TextWrapper(width=120)  # Customisable width
-            bundig_content = wrapper.fill(text.content)
-            f.write(f"Source: {text.source}\nContent: {bundig_content}\n\n")
+    extractor = WikipediaExtractor("https://en.wikipedia.org/wiki/Blue_whale")
+    text = extractor.extract()
+    with open("temp/extracted_texts.py", "w") as file:
+        file.write(text.plain)

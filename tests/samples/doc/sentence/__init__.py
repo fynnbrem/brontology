@@ -1,14 +1,11 @@
 """This module contains sample sentences, accessible as `Doc` and `str`."""
 
-from enum import StrEnum, Enum
+from enum import Enum
 from pathlib import Path
-
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional, TYPE_CHECKING
 
 from spacy.tokens import Doc
 
-from brontology.utils.spacy import MODEL
+from brontology.config import Model
 
 BIN_FOLDER = Path(__file__).parent / "bin"
 """The folder where all binary data gets stored."""
@@ -40,7 +37,7 @@ class SentenceEnum(Enum):
         try:
             return self._doc
         except AttributeError:
-            self._doc = Doc(MODEL.vocab).from_disk(self.file)
+            self._doc = Doc(Model.inst.vocab).from_disk(self.file)
             return self.doc
 
 
