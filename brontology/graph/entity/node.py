@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from random import choice
 from typing import Union
-from random import choice
-
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional, List, Tuple, Self
 
 from spacy.tokens import Token
 
@@ -37,7 +33,7 @@ class Lemma:
         return (self.lemma, self.pos) == (other.lemma, other.pos)
 
     def __str__(self):
-        return '"' + self.lemma_ + '"'
+        return self.lemma_
 
 
 class Synset:

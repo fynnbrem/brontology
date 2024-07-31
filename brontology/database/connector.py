@@ -26,7 +26,7 @@ class _Connector:
         with Connector.driver() as driver:
             driver.execute_query("""MATCH (n) DETACH DELETE n;""")
             driver.execute_query(
-                """CREATE CONSTRAINT entity_id IF NOT EXISTS FOR (e:Entity) REQUIRE e.id IS UNIQUE"""
+                """CREATE CONSTRAINT entity_id IF NOT EXISTS FOR (e:Entity) REQUIRE e.id IS UNIQUE;"""
             )
 
 

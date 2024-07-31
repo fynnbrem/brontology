@@ -3,6 +3,7 @@
 import webbrowser
 from dataclasses import dataclass, field
 
+from pydantic import AnyUrl
 from spacy.tokens import Doc, Span
 
 from brontology.config import Model
@@ -32,7 +33,7 @@ class Text:
 
 @dataclass
 class Excerpt:
-    """An excerpt from a document that can be used to display the source of some information."""
+    """An excerpt from a document that can be used to display the exact source of some information."""
 
     origin: Text
     slice: slice
@@ -46,3 +47,11 @@ class Excerpt:
     def plain(self) -> str:
         """The plaintext of the excerpt."""
         return str(self.span)
+
+
+@dataclass
+class Source:
+    """A class that represents the source of a `Text`."""
+
+    origin: Text
+    link: AnyUrl

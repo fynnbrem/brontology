@@ -1,4 +1,5 @@
-from typing import Optional, TypeVar, Iterable, Generic, Type
+from itertools import chain
+from typing import Optional, TypeVar, Iterable, Generic, Type, Generator
 
 from brontology.graph.iterable.node import IterableNode, IterableLink
 
@@ -23,6 +24,11 @@ class IterableGraph(Generic[N, L, M]):
 
         self.nodes: list[N] = list()
         self.links: list[L] = list()
+
+    @property
+    def relations(self) -> Generator[L, None, None]:
+        """All unique relations within this graph."""
+        return chain.from_iterable(n.outgoing for n in self.nodes)
 
     def add_link_by_member(self, tail: M, link: M, head: M) -> L:
         """Adds a link to graph defined by the head, link and tail members.
