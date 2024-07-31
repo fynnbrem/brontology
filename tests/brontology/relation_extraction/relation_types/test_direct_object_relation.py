@@ -1,40 +1,60 @@
 from dataclasses import dataclass
+
 # noinspection PyUnresolvedReferences
 from typing import Union, Optional
 from spacy.tokens import Token, Doc
 import en_core_web_trf
 import unittest
 
+# Funktion zur Extraktion der direkten Objektbeziehung
+from brontology.relation_extraction.relation_types.direct_object import (
+    extract_direct_object_relation,
+)
+
+# import TokenRelation Datenklasse
+from brontology.relation_extraction.model import TokenRelation
+
+
 # Definition der TokenRelation Datenklasse
+"""
 @dataclass
 class TokenRelation:
-    subj: Optional[Token]  
-    verb: Token 
-    dobj: Optional[Token] 
+    subj: Optional[Token]
+    verb: Token
+    dobj: Optional[Token]
 
     def __str__(self):
         subj_text = self.subj.text if self.subj is not None else "None"
         dobj_text = self.dobj.text if self.dobj is not None else "None"
         return f"Subj: {subj_text}, Verb: {self.verb.text}, Dobj: {dobj_text}"
+"""
+
 
 # Funktion zur Extraktion der direkten Objektbeziehung
+"""
 def extract_direct_object_relation(verb):
+    # Initialisiere das Subjekt und das direkte Objekt mit "NONE"
     dobj = None
     subj = None
 
+    # Durchlaufe die Kinder des Verbs
     for child in verb.children:
+        # Überprüfe, ob die Beziehung ein direktes Objekt ist
         if child.dep_ == "dobj":
             dobj = child
-        elif child.dep_ == "nsubj":
+        # Überprüfen, ob die Beziehung ein Subjekt ist
+        elif child.dep_ in ["nsubj"]:
             subj = child
-
-    if dobj is None or subj is None:
+    if dobj is None:
         return None
-
+    if subj is None:
+        return None
+    
     return TokenRelation(subj, verb, dobj)
+"""
 
 
-#Testfunktionen
+# Testfunktionen
 def test_verb_dobj_subj():
     # Initialisierung des NLP-Modells
     nlp = en_core_web_trf.load()
@@ -73,23 +93,35 @@ def test_checking_correct_tokenrelation():
         if token.pos_ == "VERB":
             relation = extract_direct_object_relation(token)
             if relation:
-                subj_text = relation.subj.text.lower() if relation.subj is not None else "None"
-                verb_text = relation.verb.text.lower() if relation.verb is not None else "None"
-                dobj_text = relation.dobj.text.lower() if relation.dobj is not None else "None"
+                subj_text = (
+                    relation.subj.text.lower() if relation.subj is not None else "None"
+                )
+                verb_text = (
+                    relation.verb.text.lower() if relation.verb is not None else "None"
+                )
+                dobj_text = (
+                    relation.dobj.text.lower() if relation.dobj is not None else "None"
+                )
 
-                if subj_text == expected_subj and verb_text == expected_verb and dobj_text == expected_dobj:
+                if (
+                    subj_text == expected_subj
+                    and verb_text == expected_verb
+                    and dobj_text == expected_dobj
+                ):
                     return True
                 else:
-                    print(f"Expected Relation: Subj: {expected_subj}, Verb: {expected_verb}, Dobj: {expected_dobj}")
+                    print(
+                        f"Expected Relation: Subj: {expected_subj}, Verb: {expected_verb}, Dobj: {expected_dobj}"
+                    )
                     print(f"Extracted Relation: {relation}")
                     return False
             else:
                 print("No direct object relation found.")
                 return False
-            
-            
+
+
 def test_verb_dobj():
-     # Initialisierung des NLP-Modells
+    # Initialisierung des NLP-Modells
     nlp = en_core_web_trf.load()
 
     sentence = "chases Cat"
@@ -108,7 +140,7 @@ def test_verb_dobj():
     return False
 
 
-def test_subj_verb(): 
+def test_subj_verb():
     # Initialisierung des NLP-Modells
     nlp = en_core_web_trf.load()
 
@@ -127,8 +159,9 @@ def test_subj_verb():
     # Falls kein Verb gefunden wurde oder die Relation existiert
     return False
 
+
 def test_only_verb():
-     # Initialisierung des NLP-Modells
+    # Initialisierung des NLP-Modells
     nlp = en_core_web_trf.load()
 
     sentence = "catching"
@@ -145,6 +178,7 @@ def test_only_verb():
                 return False
     # Falls kein Verb gefunden wurde oder die Relation existiert
     return False
+
 
 # Aufruf der Testfunktionen
 result_test_1 = test_verb_dobj_subj()
