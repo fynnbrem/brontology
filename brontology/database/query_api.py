@@ -1,8 +1,11 @@
+"""Transferring the internal graph object to the graph database."""
+
 from brontology.database.connector import Connector
 from brontology.graph.entity.node import Entity, Relation
 
 
 def create_entity_node(entity: Entity):
+    """Transfers the `entity` to the database."""
     with Connector.driver() as driver:
         driver.execute_query(
             """MERGE (:Entity {name: $name, id: $id})""",
@@ -12,27 +15,16 @@ def create_entity_node(entity: Entity):
 
 
 def create_entity_relation(relation: Relation):
+    """Transfers the `relation` to the database."""
     tail = relation.tail.id
     head = relation.head.id
     with Connector.driver() as driver:
         driver.execute_query(
             """MATCH (t:Entity {id: $tail})
             MATCH (h:Entity {id: $head})
-            MERGE (t)-[:VERBS {name: $name}]->(h)""",
+            MERGE (t)-[:VERBS {name: $name, source: $source}]->(h)""",
             name=str(relation.synset),
+            source=[s.plain for s in relation.sources],
             tail=tail,
             head=head,
         )
-
-
-def entity_to_properties(entity: Entity):
-    return {
-        "name": str(entity.synset),
-        "id": str(entity.id),
-    }
-
-
-def relation_to_properties(relation: Relation):
-    return {
-        "name": str(relation.synset),
-    }

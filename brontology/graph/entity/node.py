@@ -4,6 +4,7 @@ from typing import Union
 
 from spacy.tokens import Token
 
+from brontology.extractor.text_model import Excerpt
 from brontology.graph.base.node import NO_CONTENT
 from brontology.graph.iterable.node import IterableNode, IterableLink
 
@@ -91,11 +92,12 @@ class Relation(IterableLink[Entity, Synset, Lemma]):
     Also contains the source if this information."""
 
     synset: Synset
-    source: str
+    sources: list[Excerpt]
 
     def __init__(self, head: Entity, tail: Entity, content=NO_CONTENT) -> None:
         super().__init__(head=head, tail=tail, content=content)
         self.synset = Synset()
+        self.sources = list()
 
     def __str__(self):
         items = [

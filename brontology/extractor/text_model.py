@@ -35,6 +35,7 @@ class Source:
     """A class that represents the source of a `Text`."""
 
     link: str
+    """The hyperlink to the origin website."""
     text: Text = field(init=False)
 
     def open(self):
@@ -47,12 +48,12 @@ class Excerpt:
     """An excerpt from a document that can be used to display the exact source of some information."""
 
     source: Source
-    slice: slice
+    slice: tuple[int, int]
 
     @property
     def span(self) -> Span:
         """The span of the excerpt."""
-        return self.source.text.doc[self.slice]
+        return self.source.text.doc[self.slice[0] : self.slice[1]]
 
     @property
     def plain(self) -> str:

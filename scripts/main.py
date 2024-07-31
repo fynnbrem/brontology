@@ -2,6 +2,7 @@ from brontology.config import Model
 from brontology.database.connector import Connector
 from brontology.database.query_api import create_entity_node, create_entity_relation
 from brontology.extractor.text_extractor import WikipediaExtractor
+from brontology.extractor.text_model import Excerpt
 from brontology.graph.entity.graph import EntityGraph
 from brontology.relation_extraction.delegator import get_main_verbs, extract_relation
 from brontology.relation_extraction.model import TokenRelation
@@ -25,6 +26,10 @@ if __name__ == "__main__":
                 relation = extract_relation(verb)
                 if relation.tail is None or relation.head is None:
                     raise ValueError
+                sent = verb.sent
+                relation.source = Excerpt(
+                    source=text.source, slice=(sent.start, sent.end)
+                )
                 relations.append(relation)
             except ValueError:
                 ...
