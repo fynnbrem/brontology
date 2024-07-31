@@ -4,7 +4,10 @@ Functions here are purely for indev uses and should not used to present data to 
 import time
 from typing import TypeVar, Iterable
 
+from spacy.tokens import Span, Token
 from tqdm import tqdm
+
+from brontology.utils.indev.color import A
 
 Iter = TypeVar("Iter", bound=Iterable)
 
@@ -24,3 +27,19 @@ if __name__ == "__main__":
         time.sleep(0.02)
     for _ in get_tqdm(range(10)):
         time.sleep(0.05)
+
+
+def highlight_token_in_span(
+    span: Span, tokens: Token | Iterable[Token], style: str = A.bold
+) -> str:
+    """Highlights all `tokens` with the ANSI `style`"""
+    token_texts: list[str] = list()
+    for token in span:
+        if token in tokens:
+            token_texts.append(style)
+            token_texts.append(token.text_with_ws)
+            token_texts.append(A.reset)
+        else:
+            token_texts.append(token.text_with_ws)
+    text: str = "".join(token_texts)
+    return text

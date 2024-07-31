@@ -1,3 +1,5 @@
+"""The connector to the neo4j database."""
+
 import os
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -10,12 +12,16 @@ load_dotenv()
 
 @dataclass
 class _Connector:
+    """Singleton to connect to the neo4j database.
+    Use the `.driver` contextmanager to retrieve a driver for this connection."""
+
     uri: str
     username: str
     password: str
 
     @contextmanager
     def driver(self) -> Driver:
+        """Creates a neo4j driver for this connection."""
         with GraphDatabase.driver(
             self.uri,
             auth=(self.username, self.password),
@@ -23,6 +29,9 @@ class _Connector:
             yield driver
 
     def reset_database(self):
+        """Resets the database:
+        - Deletes all nodes and relations
+        - Creates basic constraints"""
         with Connector.driver() as driver:
             driver.execute_query("""MATCH (n) DETACH DELETE n;""")
             driver.execute_query(
