@@ -20,7 +20,7 @@ class Text:
     """The document generated from the plaintext. Use `.doc` for lazy loaded access."""
 
     def __post_init__(self):
-        self.source.origin = self
+        self.source.text = self
 
     @property
     def doc(self):
@@ -31,30 +31,30 @@ class Text:
 
 
 @dataclass
+class Source:
+    """A class that represents the source of a `Text`."""
+
+    link: str
+    text: Text = field(init=False)
+
+    def open(self):
+        """Opens the link in the default browser."""
+        webbrowser.open(self.link)
+
+
+@dataclass
 class Excerpt:
     """An excerpt from a document that can be used to display the exact source of some information."""
 
-    origin: Text
+    source: Source
     slice: slice
 
     @property
     def span(self) -> Span:
         """The span of the excerpt."""
-        return self.origin.doc[self.slice]
+        return self.source.text.doc[self.slice]
 
     @property
     def plain(self) -> str:
         """The plaintext of the excerpt."""
         return str(self.span)
-
-
-@dataclass
-class Source:
-    """A class that represents the source of a `Text`."""
-
-    link: str
-    origin: Text = field(init=False)
-
-    def open(self):
-        """Opens the link in the default browser."""
-        webbrowser.open(self.link)
