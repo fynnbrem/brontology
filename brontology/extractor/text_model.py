@@ -2,8 +2,8 @@
 
 import webbrowser
 from dataclasses import dataclass, field
+from typing import Union
 
-from pydantic import AnyUrl
 from spacy.tokens import Doc, Span
 
 from brontology.config import Model
@@ -13,11 +13,14 @@ from brontology.config import Model
 class Text:
     """Test extracted by the extractor. Stores its source, plaintext and spacy doc."""
 
-    source_link: str
     plain: str
+    source: Union["Source", None] = field(default=None, kw_only=True)
 
     _doc: Doc | None = field(default=None, init=False)
     """The document generated from the plaintext. Use `.doc` for lazy loaded access."""
+
+    def __post_init__(self):
+        self.source.origin = self
 
     @property
     def doc(self):
@@ -25,10 +28,6 @@ class Text:
         if self._doc is None:
             self._doc = Model.inst(self.plain)
         return self._doc
-
-    def open_source(self):
-        """Opens the source link in the default browser."""
-        webbrowser.open(self.source_link)
 
 
 @dataclass
@@ -53,5 +52,9 @@ class Excerpt:
 class Source:
     """A class that represents the source of a `Text`."""
 
-    origin: Text
-    link: AnyUrl
+    link: str
+    origin: Text = field(init=False)
+
+    def open(self):
+        """Opens the link in the default browser."""
+        webbrowser.open(self.link)

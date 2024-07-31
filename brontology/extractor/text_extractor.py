@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import requests
 from bs4 import BeautifulSoup
 
-from brontology.extractor.text_model import Text
+from brontology.extractor.text_model import Text, Source
 
 
 class Extractor(ABC):
@@ -33,7 +33,7 @@ class WikipediaExtractor(Extractor):
         else:
             content = ""
 
-        return Text(url, content)
+        return Text(content, source=Source(url))
 
 
 if __name__ == "__main__":
