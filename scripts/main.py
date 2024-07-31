@@ -1,13 +1,9 @@
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional
-
 import en_core_web_trf
 
 from brontology.graph.entity.graph import EntityGraph
 from brontology.relation_extraction.delegator import get_main_verbs, extract_relation
 from brontology.relation_extraction.model import TokenRelation
 from tests.samples.text import SAMPLE_4 as SAMPLE
-
 
 if __name__ == "__main__":
 

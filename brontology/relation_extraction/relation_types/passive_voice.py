@@ -1,5 +1,4 @@
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional
+from typing import Optional
 
 from spacy.symbols import auxpass, agent, nsubjpass, pobj
 from spacy.tokens import Token

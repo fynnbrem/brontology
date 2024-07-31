@@ -1,13 +1,11 @@
 from dataclasses import dataclass
-
-# noinspection PyUnresolvedReferences
-from typing import Union, Optional, List, Tuple, Self
 from random import choice
+from typing import Union
 
 from spacy.tokens import Token
 
-from brontology.graph.base.node import Node, Link, NO_CONTENT
-from brontology.graph.iterable.node import IterableNode, IterableLink, M
+from brontology.graph.base.node import NO_CONTENT
+from brontology.graph.iterable.node import IterableNode, IterableLink
 
 
 @dataclass(frozen=True, slots=True)
