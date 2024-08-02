@@ -11,6 +11,9 @@ FAKE_LINKS = [
     "https://en.wikipedia.org/wiki/Engine",
     "https://en.wikipedia.org/wiki/Car",
     "https://en.wikipedia.org/wiki/Aircraft",
+    "https://en.wikipedia.org/wiki/Dolphin",
+    "https://en.wikipedia.org/wiki/Orca",
+    "https://en.wikipedia.org/wiki/Fish",
 ]
 
 FAKE_LINK = FAKE_LINKS[0]
