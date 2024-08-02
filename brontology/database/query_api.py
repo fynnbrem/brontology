@@ -25,8 +25,7 @@ def create_entity_relation(relation: Relation):
             MATCH (h:Entity {id: $head})
             MERGE (t)-[:VERBS {
                 name: $name,
-                sources: $sources,
-                links: $links,
+                sources: $sources
             }]->(h)""",
             name=str(relation.synset),
             sources=[f"{s.plain}\n\n({s.source.link})" for s in relation.sources],
