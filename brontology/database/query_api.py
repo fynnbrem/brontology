@@ -18,13 +18,18 @@ def create_entity_relation(relation: Relation):
     """Transfers the `relation` to the database."""
     tail = relation.tail.id
     head = relation.head.id
+
     with Connector.driver() as driver:
         driver.execute_query(
             """MATCH (t:Entity {id: $tail})
             MATCH (h:Entity {id: $head})
-            MERGE (t)-[:VERBS {name: $name, source: $source}]->(h)""",
+            MERGE (t)-[:VERBS {
+                name: $name,
+                sources: $sources,
+                links: $links,
+            }]->(h)""",
             name=str(relation.synset),
-            source=[s.plain for s in relation.sources],
+            sources=[f"{s.plain}\n\n({s.source.link})" for s in relation.sources],
             tail=tail,
             head=head,
         )

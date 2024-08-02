@@ -7,5 +7,8 @@ FAKE_LINKS = [
     "https://en.wikipedia.org/wiki/Insect",
     "https://en.wikipedia.org/wiki/Moth",
     "https://en.wikipedia.org/wiki/Mosquito",
+    "https://en.wikipedia.org/wiki/Engine",
+    "https://en.wikipedia.org/wiki/Car",
+    "https://en.wikipedia.org/wiki/Aircraft",
 ]
 FAKE_LINK = FAKE_LINKS[0]

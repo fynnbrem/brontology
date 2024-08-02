@@ -94,7 +94,7 @@ class Relation(IterableLink[Entity, Synset, Lemma]):
     synset: Synset
     sources: list[Excerpt]
 
-    def __init__(self, head: Entity, tail: Entity, content=NO_CONTENT) -> None:
+    def __init__(self, tail: Entity, head: Entity, content=NO_CONTENT) -> None:
         super().__init__(head=head, tail=tail, content=content)
         self.synset = Synset()
         self.sources = list()

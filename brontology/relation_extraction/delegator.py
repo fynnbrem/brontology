@@ -10,6 +10,9 @@ from brontology.relation_extraction.relation_types.direct_object import (
 from brontology.relation_extraction.relation_types.passive_voice import (
     extract_passive_voice_relation,
 )
+from brontology.relation_extraction.relation_types.reflexive_relation import (
+    extract_reflexive_relation,
+)
 from brontology.utils.indev.color import A
 
 PROCESSORS: list[Callable[[Token], TokenRelation | None]] = list()
@@ -41,6 +44,7 @@ def extract_relation(verb: Token) -> TokenRelation:
 
 
 add_processor(extract_passive_voice_relation)
+add_processor(extract_reflexive_relation)
 add_processor(extract_direct_object_relation)
 
 if __name__ == "__main__":

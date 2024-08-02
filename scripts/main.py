@@ -17,7 +17,7 @@ if __name__ == "__main__":
     nlp = Model.inst
     relations: list[TokenRelation] = list()
 
-    for link in get_tqdm(FAKE_LINKS, title="Extracting"):
+    for link in get_tqdm(FAKE_LINKS[:1], title="Extracting"):
         text = WikipediaExtractor(link).extract()
         verbs = get_main_verbs(text.doc)
 

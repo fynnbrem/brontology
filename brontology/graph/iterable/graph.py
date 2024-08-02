@@ -67,7 +67,6 @@ class IterableGraph(Generic[N, L, M]):
         if head_node is None:
             head_node = self.create_node([head])
         # endregion
-
         # region: Create the new link.
         relation_link = self.link_type(tail_node, head_node)
         relation_link.add_member(link)
