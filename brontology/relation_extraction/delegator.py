@@ -3,6 +3,7 @@ from typing import Optional, Callable
 from spacy.parts_of_speech import VERB
 from spacy.tokens import Span, Token
 
+from brontology.extractor.text_model import Text, Excerpt
 from brontology.relation_extraction.model import TokenRelation
 from brontology.relation_extraction.relation_types.direct_object import (
     extract_direct_object_relation,
@@ -43,6 +44,23 @@ def extract_relation(verb: Token) -> TokenRelation:
     raise ValueError("Could not extract relation.")
 
 
+def extract_relations_from_text(text: Text) -> list[TokenRelation]:
+    """Extracts all relations from a `Text`.
+    Only processable relations will be returned."""
+    relations: list[TokenRelation] = list()
+    verbs = get_main_verbs(text.doc)
+
+    for verb in verbs:
+        try:
+            relation = extract_relation(verb)
+            sent = verb.sent
+            relation.source = Excerpt(source=text.source, slice=(sent.start, sent.end))
+            relations.append(relation)
+        except ValueError:
+            ...
+    return relations
+
+
 add_processor(extract_passive_voice_relation)
 add_processor(extract_reflexive_relation)
 add_processor(extract_direct_object_relation)
@@ -63,7 +81,7 @@ if __name__ == "__main__":
         except ValueError:
             ...
     for t_relation in t_relations:
-        text = (
+        t_text = (
             "Found relation:\n"
             f"{t_relation}\n"
             "From sentence:\n"
@@ -71,4 +89,4 @@ if __name__ == "__main__":
                 t_relation.predicate.sent, [t_relation.tail, t_relation.predicate, t_relation.head], style=A.blue
             )}\n"
         )
-        print(text)
+        print(t_text)

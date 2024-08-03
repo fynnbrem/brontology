@@ -18,6 +18,9 @@ def create_entity_relation(relation: Relation):
     """Transfers the `relation` to the database."""
     tail = relation.tail.id
     head = relation.head.id
+    sources_formatted = "\n\n".join(
+        f"====== Source {i + 1} ======\n\n{s}" for i, s in enumerate(relation.sources)
+    )
 
     with Connector.driver() as driver:
         driver.execute_query(
@@ -28,7 +31,7 @@ def create_entity_relation(relation: Relation):
                 sources: $sources
             }]->(h)""",
             name=str(relation.synset),
-            sources=[f"{s.plain}\n\n({s.source.link})" for s in relation.sources],
+            sources=sources_formatted,
             tail=tail,
             head=head,
         )

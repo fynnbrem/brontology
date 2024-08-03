@@ -1,7 +1,6 @@
 from brontology.graph.entity.node import Entity, Relation, Lemma
 from brontology.graph.iterable.graph import IterableGraph
 from brontology.relation_extraction.model import TokenRelation
-from brontology.utils.indev.prettify import pretty_print_iterable
 
 
 class EntityGraph(IterableGraph[Entity, Relation, Lemma]):
@@ -19,7 +18,3 @@ class EntityGraph(IterableGraph[Entity, Relation, Lemma]):
             Lemma.from_token(relation.head),
         )
         link.sources.append(relation.source)
-        if len(link.sources) > 1:
-            print("####################")
-            print(f"Sources for {relation}:")
-            pretty_print_iterable(link.sources)
