@@ -102,7 +102,7 @@ class Relation(IterableLink[Entity, Synset, Lemma]):
     def __str__(self):
         items = [
             str(item.synset) if item is not None else "???"
-            for item in [self.tail, self, self.tail]
+            for item in [self.tail, self, self.head]
         ]
         return " → ".join(items)
 

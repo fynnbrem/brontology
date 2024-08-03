@@ -18,7 +18,16 @@ class TokenRelation:
         items = [item.lemma_ if item is not None else "???" for item in self]
         return " → ".join(items)
 
+    def __repr__(self):
+        return f"<{self.__class__.__qualname__}: {str(self)}>"
+
     def __iter__(self):
         yield self.tail
         yield self.predicate
         yield self.head
+
+    def __eq__(self, other: "TokenRelation"):
+        """Equality is determined by the linguistic content but not the source."""
+        if not isinstance(other, TokenRelation):
+            return NotImplemented
+        return tuple(self) == tuple(other)

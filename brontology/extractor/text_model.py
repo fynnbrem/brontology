@@ -59,3 +59,9 @@ class Excerpt:
     def plain(self) -> str:
         """The plaintext of the excerpt."""
         return str(self.span)
+
+    def __str__(self):
+        return f"{self.plain}\n\n({self.source.link})"
+
+    def __repr__(self):
+        return f"<{self.__class__.__qualname__}: {self.__str__()}>"
