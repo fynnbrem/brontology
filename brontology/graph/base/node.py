@@ -10,10 +10,12 @@ class Node(Generic[L, C]):
     """A graph node. Defined by its incoming and outgoing links."""
 
     content: C
+    id: str | None
 
-    def __init__(self, content: C = NO_CONTENT) -> None:
+    def __init__(self, content: C = NO_CONTENT, id_: str | None = None) -> None:
         if content is not NO_CONTENT:
             self.content = content
+        self.id = id_
         self._incoming: list[L] = list()
         self._outgoing: list[L] = list()
 

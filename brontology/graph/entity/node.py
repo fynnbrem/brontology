@@ -4,6 +4,7 @@ from typing import Union
 
 from spacy.tokens import Token
 
+from brontology.extractor.text_model import Excerpt
 from brontology.graph.base.node import NO_CONTENT
 from brontology.graph.iterable.node import IterableNode, IterableLink
 
@@ -33,7 +34,7 @@ class Lemma:
         return (self.lemma, self.pos) == (other.lemma, other.pos)
 
     def __str__(self):
-        return '"' + self.lemma_ + '"'
+        return self.lemma_
 
 
 class Synset:
@@ -73,12 +74,12 @@ class Entity(IterableNode["Relation", Synset, Lemma]):
         return f"<{self.__class__.__qualname__}: {str(self.synset)}>"
 
     @property
-    def synset(self):
+    def synset(self) -> Synset:
         """The synset of this entity. Equal to `.content`."""
         return self.content
 
     @synset.setter
-    def synset(self, value):
+    def synset(self, value: Synset):
         self.content = value
 
     def add_member(self, member: Lemma):
@@ -91,11 +92,12 @@ class Relation(IterableLink[Entity, Synset, Lemma]):
     Also contains the source if this information."""
 
     synset: Synset
-    source: str
+    sources: list[Excerpt]
 
-    def __init__(self, head: Entity, tail: Entity, content=NO_CONTENT) -> None:
+    def __init__(self, tail: Entity, head: Entity, content=NO_CONTENT) -> None:
         super().__init__(head=head, tail=tail, content=content)
         self.synset = Synset()
+        self.sources = list()
 
     def __str__(self):
         items = [

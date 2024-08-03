@@ -12,8 +12,9 @@ class EntityGraph(IterableGraph[Entity, Relation, Lemma]):
     def add_token_relation(self, relation: TokenRelation):
         """Isolates the relation from the `TokenRelation` and adds it to this graph."""
 
-        self.add_link_by_member(
+        link = self.add_link_by_member(
             Lemma.from_token(relation.tail),
             Lemma.from_token(relation.predicate),
             Lemma.from_token(relation.head),
         )
+        link.sources.append(relation.source)

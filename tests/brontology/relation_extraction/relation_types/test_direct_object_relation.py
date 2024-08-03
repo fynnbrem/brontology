@@ -1,13 +1,9 @@
-from dataclasses import dataclass
-from typing import Union, Optional
-from spacy.tokens import Token, Doc
 import en_core_web_trf
-import unittest
+from spacy.tokens import Doc
 
 from brontology.relation_extraction.relation_types.direct_object import (
     extract_direct_object_relation,
 )
-from brontology.relation_extraction.model import TokenRelation
 
 
 # testfunctions
