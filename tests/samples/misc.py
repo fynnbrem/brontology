@@ -15,5 +15,12 @@ FAKE_LINKS = [
     "https://en.wikipedia.org/wiki/Orca",
     "https://en.wikipedia.org/wiki/Fish",
 ]
+"""A collection of links for evaluation purposes.
+- The form 3 mostly disjunct groups:
+    - Lizards and their prey
+    - Dolphins an their prey
+    - Cars
+- The first link (Moth) is the shortest article.
+"""
 
 FAKE_LINK = FAKE_LINKS[0]

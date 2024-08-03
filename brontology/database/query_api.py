@@ -28,10 +28,12 @@ def create_entity_relation(relation: Relation):
             MATCH (h:Entity {id: $head})
             MERGE (t)-[:VERBS {
                 name: $name,
-                sources: $sources
+                sources: $sources,
+                source_count: $source_count
             }]->(h)""",
             name=str(relation.synset),
             sources=sources_formatted,
+            source_count=len(relation.sources),
             tail=tail,
             head=head,
         )
