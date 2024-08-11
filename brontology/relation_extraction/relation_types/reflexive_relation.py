@@ -1,3 +1,5 @@
+"""The reflexive relation extraction."""
+
 from typing import Optional
 
 from spacy.symbols import nsubj

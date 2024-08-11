@@ -25,7 +25,7 @@ if __name__ == "__main__":
     nlp = Model.inst
     token_relations: list[TokenRelation] = list()
 
-    for web_link in get_tqdm(FAKE_LINKS[:1], title="Extracting from Text"):
+    for web_link in get_tqdm(FAKE_LINKS, title="Extracting from Text"):
         text = WikipediaExtractor(web_link).extract()
         unfiltered = extract_relations_from_text(text)
         token_relations.extend(filter(is_processable, unfiltered))
