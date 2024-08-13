@@ -2,11 +2,13 @@ from dataclasses import dataclass
 from random import choice
 from typing import Union
 
+from spacy.symbols import VERB
 from spacy.tokens import Token
 
 from brontology.extractor.text_model import Excerpt
 from brontology.graph.base.node import NO_CONTENT
 from brontology.graph.iterable.node import IterableNode, IterableLink
+from brontology.utils.language_utils import is_neg
 
 
 @dataclass(frozen=True, slots=True)
@@ -17,15 +19,24 @@ class Lemma:
     lemma: int
     pos_: str
     pos: int
+    is_neg: bool | None = None
+    """Whether this word is negated.
+    This must be `None` if the word is qualified for negation in general, e.g. nouns."""
 
     @classmethod
     def from_token(cls, token: Token):
-        """Instantiate this class from a spacy-token."""
+        """Instantiate this class from a spacy-token.
+        For verbs, this will also determine `is_neg`."""
+        if token.pos == VERB:
+            is_neg_ = is_neg(token)
+        else:
+            is_neg_ = None
         return cls(
             lemma_=token.lemma_,
             lemma=token.lemma,
             pos_=token.pos_,
             pos=token.pos,
+            is_neg=is_neg_,
         )
 
     def __eq__(self, other: Union["Lemma", Token]) -> bool:
@@ -34,7 +45,10 @@ class Lemma:
         return (self.lemma, self.pos) == (other.lemma, other.pos)
 
     def __str__(self):
-        return self.lemma_
+        if self.is_neg:
+            return "not " + self.lemma_
+        else:
+            return self.lemma_
 
 
 class Synset:
