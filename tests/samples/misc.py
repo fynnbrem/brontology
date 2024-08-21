@@ -14,9 +14,12 @@ FAKE_LINKS = [
     "https://en.wikipedia.org/wiki/Dolphin",
     "https://en.wikipedia.org/wiki/Orca",
     "https://en.wikipedia.org/wiki/Fish",
+    "https://en.wikipedia.org/wiki/Fish",
+    "https://en.wikipedia.org/wiki/Mammal",
+    "https://en.wikipedia.org/wiki/Animal",
 ]
 """A collection of links for evaluation purposes.
-- The form 3 mostly disjunct groups:
+- The form 3 mostly disjunctive groups:
     - Lizards and their prey
     - Dolphins an their prey
     - Cars
