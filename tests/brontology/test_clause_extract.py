@@ -72,7 +72,7 @@ class ClauseFixtures(Fixtures[_CASE_TYPE]):
             ),
             "two subjects": (
                 "The wolf and bear chases the deer.",
-                [(wolf, chase, deer), (bear, chase, deer, "asd")],
+                [(wolf, chase, deer), (bear, chase, deer)],
             ),
             "two objects": (
                 "The wolf chases the deer and rabbit.",

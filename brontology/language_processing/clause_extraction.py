@@ -1,3 +1,5 @@
+from itertools import product
+
 from spacy.symbols import (
     conj,
     nsubjpass,
@@ -115,9 +117,15 @@ def get_relations(conjunct: Conjunct) -> list[TokenRelation]:
         if obj_token is None:
             get_obj(conjunct.tail, is_passive)
 
-        if is_passive:
-            relation = TokenRelation(obj_token, verb, subj_token)
-        else:
-            relation = TokenRelation(subj_token, verb, obj_token)
-        relations.append(relation)
+        combinations = product(
+            get_conjunct_members(subj_token) if subj_token is not None else [None],
+            [verb],
+            get_conjunct_members(obj_token) if obj_token is not None else [None],
+        )
+        for subj_token_, verb_, obj_token_ in combinations:
+            if is_passive:
+                relation = TokenRelation(obj_token_, verb, subj_token_)
+            else:
+                relation = TokenRelation(subj_token_, verb, obj_token_)
+            relations.append(relation)
     return relations
