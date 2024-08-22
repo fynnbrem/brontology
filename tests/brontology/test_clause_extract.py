@@ -1,5 +1,7 @@
 from typing import TypeVar, Generic, Generator, Any
 
+import pytest
+
 from brontology.config import Model
 from brontology.language_processing.clause_extraction import get_relations_from_span
 from brontology.relation_extraction.model import TokenRelation
@@ -48,7 +50,8 @@ class Fixtures(Generic[T]):
 
         Skips keys that begin with an underscore."""
         for keys, data in Fixtures._iter_dict(cls.data, list()):
-            yield (" → ".join(keys), data)
+            yield (" > ".join(keys), data)
+            # ↑ Do not use the non-ascii arrow here as pytest will encode it.
 
 
 _CASE_TYPE = tuple[str, list[tuple[str | None, str, str | None]]]
@@ -209,10 +212,22 @@ def _compare_to_token_relation(
     return True
 
 
-def test_extract_relation():
-    for title, case in ClauseFixtures.yield_cases():
-        case: ClauseFixtures.case_type
-        case_text, case_result = case
-        relations = get_relations_from_span(Model.inst(case_text))
-        for relation in relations:
-            assert any(_compare_to_token_relation(cr, relation) for cr in case_result)
+def _extract_lemmas(relation: TokenRelation) -> list[str | None]:
+    lemmas = list()
+    for token in relation:
+        if token is None:
+            lemmas.append(None)
+        else:
+            lemmas.append(token.lemma_)
+    return lemmas
+
+
+@pytest.mark.parametrize("title, case", ClauseFixtures.yield_cases())
+def test_extract_relation(title: str, case: ClauseFixtures.case_type):
+    case_text, case_result = case
+    relations = get_relations_from_span(Model.inst(case_text))
+
+    relation_lemmas = {tuple(_extract_lemmas(r)) for r in relations}
+    case_result = set(case_result)
+
+    assert relation_lemmas == case_result, title

@@ -109,8 +109,9 @@ def get_relations(conjunct: Conjunct) -> list[TokenRelation]:
     for verb in conjunct:
         subj_token = get_subj(verb, is_passive)
         if subj_token is None:
-            get_obj(conjunct.head, is_passive)
-        obj_token = get_subj(verb, is_passive)
+            get_subj(conjunct.head, is_passive)
+
+        obj_token = get_obj(verb, is_passive)
         if obj_token is None:
             get_obj(conjunct.tail, is_passive)
 

@@ -40,9 +40,12 @@ def get_verb_conjuncts(span: Span) -> list[Conjunct]:
     conjuncts: list[Conjunct] = list()
     matched_tokens: set[int] = set()
     for verb in get_verbs(span):
+        if verb.i in matched_tokens:
+            continue
         conjunct = get_conjunct_members(verb)
         for v in conjunct:
             matched_tokens.add(v.i)
+        conjuncts.append(conjunct)
     return conjuncts
 
 
