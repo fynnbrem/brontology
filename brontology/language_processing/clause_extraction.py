@@ -12,12 +12,19 @@ from spacy.symbols import (
 )
 from spacy.tokens import Token
 
+from brontology.relation_extraction.model import TokenRelation
 from brontology.utils import partition
-from brontology.utils.language_utils import has_child, get_child, is_passive, get_verbs
+from brontology.utils.language_utils import (
+    has_child,
+    get_child,
+    get_verbs,
+)
 from brontology.utils.language_utils.conjunct import (
     get_conjunct_members,
     Conjunct,
+    get_verb_conjuncts,
 )
+from brontology.utils.language_utils.voice import check_passive
 from brontology.utils.typing import DocSpan
 
 
@@ -66,63 +73,50 @@ def get_clause_verbs(span: DocSpan) -> list[list[Token]]:
     return clause_verbs
 
 
-def has_subj(verb: Token) -> bool:
-    """`True` if the `verb` has a subject, either passive voice or active voice."""
-    if is_passive(verb):
-        return has_child(verb, [nsubjpass, csubjpass])
+def get_subj(verb: Token, is_passive: bool) -> Token | None:
+    """Returns the subject of the `verb`."""
+    if is_passive:
+        return get_child(verb, [nsubjpass, csubjpass])
     else:
-        return has_child(verb, [nsubj, csubj])
+        return get_child(verb, [nsubj, csubj])
 
 
-def has_active_subj(verb: Token) -> bool:
-    return has_child(verb, [nsubj, csubj])
+def get_obj(verb: Token, is_passive: bool) -> Token | None:
+    """Returns the object of the `verb`.
 
-
-def has_active_obj(verb: Token) -> bool:
-    return has_child(verb, [obj, iobj, dobj, pobj])
-
-
-def has_obj(verb: Token) -> bool:
-    """`True` if the `verb` has an object.
-    For passive voice, this means that the actor has a pobj."""
-    if is_passive(verb):
+    For passive voice, this is the agent's object.
+    """
+    if is_passive:
         agent_token = get_child(verb, agent)
         if agent_token is not None:
-            return has_child(agent_token, pobj)
+            return get_child(agent_token, pobj)
         else:
-            return False
-
-
-def is_single_active_clause(verbs: Conjunct):
-    # If there are multiple objects, it must be at least 2 separate clauses.
-    return [has_active_obj(v) for v in verbs].count(True) <= 1
-
-
-def is_clause_conjunct(verbs: Conjunct):
-    passives_count = [is_passive(v) for v in verbs].count(True)
-    if passives_count == len(verbs):
-        all_passive = True
-    elif passives_count == 0:
-        all_passive = False
+            return None
     else:
-        # The conjunct has mixed voice so it must be different clauses.
-        return True
+        return get_child(verb, [obj, iobj, dobj, pobj])
 
 
-def is_clause(verb: Token) -> bool:
-    """Check if the verb forms an entire clause by itself.
-    This is only true if it directly links to a subject and object."""
-    if is_passive(verb):
-        # Passive Verb
-        # The object is defined via the actor.
-        has_subj = has_child(verb, [nsubjpass, csubjpass])
-        agent_token = get_child(verb, agent)
-        if agent_token is not None:
-            has_obj = has_child(agent_token, pobj)
+def get_relations_from_span(span: DocSpan) -> list[TokenRelation]:
+    relations: list[TokenRelation] = list()
+    for conjunct in get_verb_conjuncts(span):
+        relations.extend(get_relations(conjunct))
+    return relations
+
+
+def get_relations(conjunct: Conjunct) -> list[TokenRelation]:
+    relations = list()
+    is_passive = check_passive(conjunct.head)
+    for verb in conjunct:
+        subj_token = get_subj(verb, is_passive)
+        if subj_token is None:
+            get_obj(conjunct.head, is_passive)
+        obj_token = get_subj(verb, is_passive)
+        if obj_token is None:
+            get_obj(conjunct.tail, is_passive)
+
+        if is_passive:
+            relation = TokenRelation(obj_token, verb, subj_token)
         else:
-            has_obj = False
-    else:
-        # Active Verb
-        has_subj = has_child(verb, [nsubj, csubj])
-        has_obj = has_child(verb, [obj, iobj, dobj, pobj])
-    return has_subj and has_obj
+            relation = TokenRelation(subj_token, verb, obj_token)
+        relations.append(relation)
+    return relations

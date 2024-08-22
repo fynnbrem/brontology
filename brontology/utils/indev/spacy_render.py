@@ -28,7 +28,7 @@ _ELEMENT_BASE = """
 """
 
 
-def render(
+def render_in_web(
     docs: Iterable[str | DocSpan] | str | DocSpan, titles: list[str] | None = None
 ):
     if not is_true_iterable(docs):

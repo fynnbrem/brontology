@@ -2,7 +2,7 @@
 
 from typing import Iterable, Generator
 
-from spacy.symbols import neg, auxpass, VERB
+from spacy.symbols import neg, VERB
 from spacy.tokens import Token
 
 from brontology.utils.typing import DocSpan
@@ -28,11 +28,6 @@ def get_child(token: Token, deps: Iterable[int] | int) -> Token | None:
 def is_neg(verb: Token) -> bool:
     """Check if the `verb` is negated."""
     return has_child(verb, neg)
-
-
-def is_passive(verb: Token) -> bool:
-    """Check if the `verb` is part of a passive voice."""
-    return has_child(verb, auxpass)
 
 
 def get_verbs(span: DocSpan) -> Generator[Token, None, None]:

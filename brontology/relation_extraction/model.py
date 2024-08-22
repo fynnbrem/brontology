@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Generator
 
 from spacy.tokens import Token
 
@@ -21,7 +21,7 @@ class TokenRelation:
     def __repr__(self):
         return f"<{self.__class__.__qualname__}: {str(self)}>"
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Token | None, None, None]:
         yield self.tail
         yield self.predicate
         yield self.head
