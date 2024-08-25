@@ -1,18 +1,23 @@
 # Python Technical
-pydantic==2.6.4
-python-dotenv==1.0.1
-tqdm
+pydantic~=2.6.4
+python-dotenv~=1.0.1
+tqdm~=4.66.2
 
 # Web Scraping
-beautifulsoup4==4.12.3
-requests==2.31.0
+beautifulsoup4~=4.12.3
+requests~=2.31.0
 
 # Language Processing
-spacy==3.7.4
+spacy~=3.7.4
 en-core-web-trf@https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.7.3/en_core_web_trf-3.7.3-py3-none-any.whl#sha256=f72abb34bdf174876bd4267b29b2501677e605e0a251fdc56c163003182ed68b
 
 # Database
-neo4j==5.23.0
+neo4j~=5.23.0
+
+# Testing
+pytest~=8.2.2
 
 # Misc
 -e .
+brontology~=1.0.0
+setuptools~=69.2.0

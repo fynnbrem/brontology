@@ -23,25 +23,31 @@ T = TypeVar("T")
 
 
 class Fixtures(Generic[T]):
+    """Fixtures for any test.
+    They are defined in the `data` as (nested) dict and can be accessed via `yield_cases`.
+    """
+
+    case_type: type
     data: dict
 
     @staticmethod
     def _iter_dict(
-        __d: dict, prev_keys: list[str]
-    ) -> Generator[tuple[list[str], Any], None, None]:
+        __d: dict, prev_keys: list[str], ignore_all: bool
+    ) -> Generator[tuple[list[str], Any, bool], None, None]:
         """Iterates over a dict that has the shape expected in `data` and yields all cases.
-        The yield contains all lists upto that case and the case data itself.
+        The yield contains all keys upto that case, the case data itself and whether it is ignored.
 
-        Skips keys that begin with an underscore."""
+        Keys that start with an underscore will count as ignored."""
         for k, v in __d.items():
-            if k.startswith("_"):
-                continue
+            ignore_this = k.startswith("_") or ignore_all
             new_keys = prev_keys + [k]
             if isinstance(v, dict):
-                for v_ in Fixtures._iter_dict(v, prev_keys=new_keys):
+                for v_ in Fixtures._iter_dict(
+                    v, prev_keys=new_keys, ignore_all=ignore_this
+                ):
                     yield v_
             else:
-                yield (new_keys, v)
+                yield (new_keys, v, ignore_this)
 
     @classmethod
     def yield_cases(cls) -> Generator[tuple[str, T], None, None]:
@@ -49,9 +55,16 @@ class Fixtures(Generic[T]):
         The first item of the tuple is a title constructed from the keys and the second item the case data.
 
         Skips keys that begin with an underscore."""
-        for keys, data in Fixtures._iter_dict(cls.data, list()):
-            yield (" > ".join(keys), data)
-            # ↑ Do not use the non-ascii arrow here as pytest will encode it.
+        for (
+            keys,
+            data,
+            ignored,
+        ) in Fixtures._iter_dict(cls.data, list(), False):
+            # ↓ Do not use the non-ascii arrow here as pytest will encode it.
+            if ignored:
+                yield pytest.param(" > ".join(keys), data, marks=pytest.mark.xfail)
+            else:
+                yield pytest.param(" > ".join(keys), data)
 
 
 _CASE_TYPE = tuple[str, list[tuple[str | None, str, str | None]]]
@@ -119,7 +132,7 @@ class ClauseFixtures(Fixtures[_CASE_TYPE]):
         "non-clause passive voice": {
             "no actor": (
                 "The deer was chased and hunted.",
-                [(None, deer, chase), (None, deer, hunt)],
+                [(None, chase, deer), (None, hunt, deer)],
             ),
             "with actor": (
                 "The deer was chased and hunted by the wolf.",
