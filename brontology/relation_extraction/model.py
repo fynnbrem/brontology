@@ -6,6 +6,13 @@ from spacy.tokens import Token
 from brontology.extractor.text_model import Excerpt
 
 
+def _get_isolated_token(token: Token | None) -> tuple[int, int] | None:
+    if token is None:
+        return None
+    else:
+        return (token.lemma, token.pos)
+
+
 @dataclass(slots=True)
 class TokenRelation:
     tail: Optional[Token]
@@ -30,6 +37,6 @@ class TokenRelation:
         """Equality is determined by the linguistic content but not the source."""
         if not isinstance(other, TokenRelation):
             return NotImplemented
-        return tuple((t.lemma, t.pos) for t in self) == tuple(
-            (t.lemma, t.pos) for t in other
+        return tuple(_get_isolated_token(t) for t in self) == tuple(
+            _get_isolated_token(t) for t in other
         )

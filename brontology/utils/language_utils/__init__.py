@@ -1,6 +1,6 @@
 """Utilities that help in language processing. Mostly advanced syntax navigation for spaCy."""
 
-from typing import Iterable, Generator
+from typing import Iterable, Generator, Callable
 
 from spacy.symbols import neg, VERB
 from spacy.tokens import Token
@@ -21,6 +21,14 @@ def get_child(token: Token, deps: Iterable[int] | int) -> Token | None:
         deps = [deps]
     try:
         return next(child for child in token.children if child.dep in deps)
+    except StopIteration:
+        return None
+
+
+def match_child(token: Token, predicate: Callable[[Token], bool]) -> Token | None:
+    """Returns the first child of the `token` for which the `predicate` is `True`."""
+    try:
+        return next(child for child in token.children if predicate(child))
     except StopIteration:
         return None
 

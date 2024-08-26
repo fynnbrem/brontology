@@ -15,9 +15,10 @@ class Conjunct:
 
     members: tuple[Token, ...]
 
-    def get_members_by_type(self, *allowed_types: int):
-        allowed_types = set(allowed_types)
-        return [m for m in self.members if m.pos in allowed_types]
+    def get_members_by_pos(self, *allowed_pos: int):
+        """Returns all members that have any of the POS-tags in `allowed_pos`."""
+        allowed_pos = set(allowed_pos)
+        return [m for m in self.members if m.pos in allowed_pos]
 
     def __getitem__(self, item):
         return self.members.__getitem__(item)

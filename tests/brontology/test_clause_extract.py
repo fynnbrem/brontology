@@ -15,11 +15,15 @@ deer = "deer"
 rabbit = "rabbit"
 badger = "badger"
 
+william = "William"
+
 chase = "chase"
 hunt = "hunt"
 track = "track"
 eat = "eat"
 rest = "rest"
+kill = "kill"
+bite = "bite"
 
 T = TypeVar("T")
 
@@ -93,6 +97,10 @@ class ClauseFixtures(Fixtures[_CASE_TYPE]):
                 "The wolf chases the deer and rabbit.",
                 [(wolf, chase, deer), (wolf, chase, rabbit)],
             ),
+            "two objects with reflexive": (
+                "The wolf chases the deer and itself.",
+                [(wolf, chase, deer), (wolf, chase, wolf)],
+            ),
             "all two": (
                 "The wolf and bear chase and hunt the deer and rabbit.",
                 [
@@ -162,6 +170,10 @@ class ClauseFixtures(Fixtures[_CASE_TYPE]):
                 "The deer was chased, the rabbit was hunted by the bear and the badger was tracked.",
                 [(None, chase, deer), (bear, hunt, rabbit), (None, track, badger)],
             ),
+            "two actors with reflexive": (
+                "The deer was chased by the wolf and itself.",
+                [(wolf, chase, deer), (deer, chase, deer)],
+            ),
         },
         "_pure-clause mixed voice": {
             "passive last": (
@@ -211,7 +223,46 @@ class ClauseFixtures(Fixtures[_CASE_TYPE]):
                 [(None, track, rabbit), (wolf, hunt, deer), (wolf, chase, deer)],
             ),
         },
+        "single verb passive voice": {
+            "with actor": ("The deer was hunted by the wolf.", [(wolf, hunt, deer)]),
+            "no actor": ("The deer was hunted.", [(None, hunt, deer)]),
+            "auxiliary verb": (
+                "The deer has been hunted by the wolf.",
+                [(wolf, hunt, deer)],
+            ),
+            "preposition no actor": (
+                "The deer was hunted near the forest.",
+                [(None, hunt, deer)],
+            ),
+            "preposition with actor 1": (
+                "The deer was hunted near the forest by the wolf.",
+                [(wolf, hunt, deer)],
+            ),
+            "preposition with actor 2": (
+                "The deer was hunted by the wolf near the forest.",
+                [(wolf, hunt, deer)],
+            ),
+            "false noun actor": (
+                "The deer was killed by bite.",
+                [(None, kill, deer)],
+            ),
+            "false verb actor": (
+                "The deer was killed by biting.",
+                [(None, kill, deer), (None, bite, None)],
+            ),
+            "named actor": ("The deer was hunted by William.", [(william, hunt, deer)]),
+        },
+        "single verb active voice": {
+            "default": ("The wolf chases the deer.", [(wolf, chase, deer)]),
+            "reflexive": ("The wolf chases itself.", [(wolf, chase, wolf)]),
+        },
     }
+
+
+default = "The tree was felled by the lumberjack."
+no_actor = "The tree was felled."
+auxiliary = "The tree has been felled by the lumberjack."
+preposition = "The tree has been felled near the ocean."
 
 
 def _compare_to_token_relation(
