@@ -1,10 +1,12 @@
+"""Tests for the clause extraction."""
+
 from typing import TypeVar, Generic, Generator, Any
 
 import pytest
 
 from brontology.config import Model
-from brontology.language_processing.clause_extraction import get_relations_from_span
 from brontology.relation_extraction.model import TokenRelation
+from brontology.relation_extraction.relation_extractor import get_relations_from_span
 
 wolf = "wolf"
 bear = "bear"

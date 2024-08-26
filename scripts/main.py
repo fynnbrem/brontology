@@ -1,4 +1,3 @@
-from brontology.config import Model
 from brontology.database.connector import Connector
 from brontology.database.query_api import create_entity_node, create_entity_relation
 from brontology.extractor.text_extractor import WikipediaExtractor
@@ -22,7 +21,6 @@ if __name__ == "__main__":
     print("Starting")
     graph = EntityGraph()
 
-    nlp = Model.inst
     token_relations: list[TokenRelation] = list()
 
     for web_link in get_tqdm(FAKE_LINKS, title="Extracting from Text"):

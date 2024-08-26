@@ -1,5 +1,6 @@
 """Consistent handling of linguistic conjuncts."""
 
+import logging
 from dataclasses import dataclass
 
 from spacy.symbols import conj
@@ -13,6 +14,10 @@ class Conjunct:
     """Members of a coordinating conjunct."""
 
     members: tuple[Token, ...]
+
+    def get_members_by_type(self, *allowed_types: int):
+        allowed_types = set(allowed_types)
+        return [m for m in self.members if m.pos in allowed_types]
 
     def __getitem__(self, item):
         return self.members.__getitem__(item)
@@ -42,7 +47,11 @@ def get_verb_conjuncts(span: Span) -> list[Conjunct]:
     for verb in get_verbs(span):
         if verb.i in matched_tokens:
             continue
-        conjunct = get_conjunct_members(verb)
+        try:
+            conjunct = get_conjunct_members(verb)
+        except ValueError:
+            logging.warning("Could not extract a conjunct properly.")
+            continue
         for v in conjunct:
             matched_tokens.add(v.i)
         conjuncts.append(conjunct)

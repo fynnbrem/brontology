@@ -30,4 +30,6 @@ class TokenRelation:
         """Equality is determined by the linguistic content but not the source."""
         if not isinstance(other, TokenRelation):
             return NotImplemented
-        return tuple(self) == tuple(other)
+        return tuple((t.lemma, t.pos) for t in self) == tuple(
+            (t.lemma, t.pos) for t in other
+        )
