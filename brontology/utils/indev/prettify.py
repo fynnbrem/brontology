@@ -1,5 +1,5 @@
 """Functions to help prettifying console outputs.
-Functions here are purely for indev uses and should not used to present data to an end user."""
+Functions here are purely for indev uses and should not be used to present data to an end user."""
 
 import time
 from typing import Iterable, TypeVar
@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
 
 def highlight_token_in_span(
-        span: Span, tokens: Token | Iterable[Token], style: str = A.bold
+    span: Span, tokens: Token | Iterable[Token], style: str = A.bold
 ) -> str:
     """Highlights all `tokens` with the ANSI `style`"""
     token_texts: list[str] = list()
@@ -50,7 +50,7 @@ NO_KEY = object()
 
 
 def _pretty_print_iterable(
-        __d: Iterable, /, depth: int = 0, indent: str = "\t"
+    __d: Iterable, /, depth: int = 0, indent: str = "\t"
 ) -> list[str]:
     """Recursive worker function for `pretty_print_iterable`.
 
@@ -96,7 +96,7 @@ def _pretty_print_iterable(
 
 
 def pretty_print_iterable(
-        __d: Iterable, /, indent: str = "  ", do_print: bool = True, init_depth: int = 0
+    __d: Iterable, /, indent: str = "  ", do_print: bool = True, init_depth: int = 0
 ) -> str:
     """Neatly wraps and indents iterables of any depth.
 

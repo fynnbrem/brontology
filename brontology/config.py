@@ -1,3 +1,5 @@
+"""Global configuration values for this project."""
+
 import spacy
 from spacy import Language
 

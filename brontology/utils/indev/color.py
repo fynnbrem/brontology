@@ -1,3 +1,5 @@
+"""ANSI color codes."""
+
 from enum import StrEnum
 
 

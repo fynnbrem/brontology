@@ -28,7 +28,8 @@ class _Connector:
         ) as driver:
             yield driver
 
-    def reset_database(self):
+    @staticmethod
+    def reset_database():
         """Resets the database:
         - Deletes all nodes and relations
         - Creates basic constraints"""

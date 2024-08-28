@@ -1,3 +1,4 @@
+"""Tests for passive voice detection."""
 import pytest
 
 from brontology.config import Model

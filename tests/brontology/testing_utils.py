@@ -1,3 +1,5 @@
+"""Utilities used in testing."""
+
 from typing import Generic, Generator, Any, TypeVar
 
 import pytest

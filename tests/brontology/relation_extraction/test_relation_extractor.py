@@ -1,4 +1,4 @@
-"""Tests for the clause extraction."""
+"""Tests for the relation extractor."""
 
 import pytest
 
@@ -27,7 +27,7 @@ bite = "bite"
 _CASE_TYPE = tuple[str, list[tuple[str | None, str, str | None]]]
 
 
-class ClauseFixtures(Fixtures[_CASE_TYPE]):
+class RelationExtractorFixtures(Fixtures[_CASE_TYPE]):
     case_type = _CASE_TYPE
 
     data: dict[str, dict[str, case_type]] = {
@@ -255,8 +255,8 @@ def _extract_lemmas(relation: TokenRelation) -> list[str | None]:
     return lemmas
 
 
-@pytest.mark.parametrize("title, case", ClauseFixtures.yield_cases())
-def test_extract_relation(title: str, case: ClauseFixtures.case_type):
+@pytest.mark.parametrize("title, case", RelationExtractorFixtures.yield_cases())
+def test_extract_relation(title: str, case: RelationExtractorFixtures.case_type):
     case_text, case_result = case
     relations = get_relations_from_span(Model.inst(case_text))
 

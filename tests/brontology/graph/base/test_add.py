@@ -15,7 +15,7 @@ def test_add_link() -> None:
 
 
 def test_add_incoming() -> None:
-    """Adds an incoming link to a node, expecting it no be registered on that node."""
+    """Adds an incoming link to a node, expecting it to be registered on that node."""
     node: Node = Node()
     link: Link = Link(Node(), Node())
 
@@ -24,7 +24,7 @@ def test_add_incoming() -> None:
 
 
 def test_add_outgoing() -> None:
-    """Adds an outgoing link to a node, expecting it no be registered on that node."""
+    """Adds an outgoing link to a node, expecting it to be registered on that node."""
     node: Node = Node()
     link: Link = Link(Node(), Node())
     node.add_outgoing(link)

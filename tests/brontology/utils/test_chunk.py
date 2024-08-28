@@ -1,3 +1,5 @@
+"""Tests for the `chunk` method."""
+
 from typing import Callable, Any
 
 import pytest
