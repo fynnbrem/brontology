@@ -1,3 +1,5 @@
+"""A universal relation extractor."""
+
 from itertools import product
 from typing import Iterable
 
