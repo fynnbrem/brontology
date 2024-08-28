@@ -3,7 +3,7 @@ import pytest
 from brontology.config import Model
 from brontology.utils.language_utils import get_verbs
 from brontology.utils.language_utils.voice import check_passive
-from tests.brontology.utils import Fixtures
+from tests.brontology.testing_utils import Fixtures
 
 chase = "chase"
 hunt = "hunt"

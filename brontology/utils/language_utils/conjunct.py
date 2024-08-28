@@ -1,12 +1,13 @@
 """Consistent handling of linguistic conjuncts."""
 
-import logging
 from dataclasses import dataclass
 
 from spacy.symbols import conj
 from spacy.tokens import Token, Span
 
+from brontology.utils import chunk
 from brontology.utils.language_utils import get_child, get_verbs
+from brontology.utils.language_utils.voice import check_passive
 
 
 @dataclass
@@ -40,34 +41,45 @@ class Conjunct:
         return self.members[-1]
 
 
+def _partition_verb_conjunct(verbs: list[Token]) -> list[Conjunct]:
+    """Partitions verbs within a conjunct by active and passive voice.
+    This can break down a large conjunct partially into its nested conjuncts."""
+    return [Conjunct(tuple(c)) for c in chunk(verbs, check_passive)]
+
+
 def get_verb_conjuncts(span: Span) -> list[Conjunct]:
     """Returns all conjuncts that consist of verbs within the `span`.
-    Every `Conjunct` is exclusive."""
+    Every `Conjunct` is exclusive.
+    The conjuncts are split into smaller conjuncts separated by passive/active voice."""
     conjuncts: list[Conjunct] = list()
     matched_tokens: set[int] = set()
     for verb in get_verbs(span):
         if verb.i in matched_tokens:
             continue
-        try:
-            conjunct = get_conjunct_members(verb)
-        except ValueError:
-            logging.warning("Could not extract a conjunct properly.")
-            continue
+        conjunct = get_conjunct_members(verb, allow_non_head=True)
+        # ↑ Allow non-head to include conjuncts that are not lead by a verb.
         for v in conjunct:
             matched_tokens.add(v.i)
-        conjuncts.append(conjunct)
+        sub_conjuncts = _partition_verb_conjunct(list(conjunct))
+        for sub_conjunct in sub_conjuncts:
+            conjuncts.append(sub_conjunct)
     return conjuncts
 
 
-def get_conjunct_members(token: Token) -> Conjunct:
+def get_conjunct_members(token: Token, *, allow_non_head: bool = False) -> Conjunct:
     """Gets all members of the conjunct the `token` is the lead verb of.
     This includes the `token` itself.
 
+    :param token:
+        The token from which to start from.
+    :param allow_non_head:
+        Flag to allow starting at tokens that are not the head of a conjunct.
+        This will yield only the conjunct members after this token.
     :raises ValueError:
         If the token is not the lead verb of the conjunct.
     """
-    if token.dep == conj:
-        raise ValueError("Can only get conjuncts of the lead verb")
+    if token.dep == conj and not allow_non_head:
+        raise ValueError("Can only get conjuncts starting at a lead verb")
     members = list()
     next_member = token
     while next_member is not None:

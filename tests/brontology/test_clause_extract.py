@@ -5,7 +5,7 @@ import pytest
 from brontology.config import Model
 from brontology.relation_extraction.model import TokenRelation
 from brontology.relation_extraction.relation_extractor import get_relations_from_span
-from tests.brontology.utils import Fixtures
+from tests.brontology.testing_utils import Fixtures
 
 wolf = "wolf"
 bear = "bear"
@@ -206,6 +206,22 @@ class ClauseFixtures(Fixtures[_CASE_TYPE]):
         "single verb active voice": {
             "default": ("The wolf chases the deer.", [(wolf, chase, deer)]),
             "reflexive": ("The wolf chases itself.", [(wolf, chase, wolf)]),
+        },
+        "real-world": {
+            "1": (
+                (
+                    "Clearcutting, first used in the latter half of the 20th century, is less expensive,"
+                    " but devastating to the environment;"
+                    " and companies are required by law to ensure that harvested areas are adequately regenerated."
+                ),
+                [
+                    (None, "use", None),
+                    ("law", "require", "company"),
+                    (None, "ensure", None),
+                    (None, "harvest", None),
+                    (None, "regenerate", "area"),
+                ],
+            )
         },
     }
 
