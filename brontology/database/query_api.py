@@ -4,36 +4,48 @@ from brontology.database.connector import Connector
 from brontology.graph.entity.node import Entity, Relation
 
 
-def create_entity_node(entity: Entity):
+def create_entity_node(entities: list[Entity]):
     """Transfers the `entity` to the database."""
+    if any(e.id is None for e in entities):
+        raise ValueError("All entities must have an ID.")
+    data = [{"name": str(e.synset), "id": str(e.id)} for e in entities]
     with Connector.driver() as driver:
         driver.execute_query(
-            """MERGE (:Entity {name: $name, id: $id})""",
-            name=str(entity.synset),
-            id=str(entity.id),
+            """UNWIND $data AS entity
+            MERGE (:Entity {name: entity.name, id: entity.id})""",
+            data=data,
         )
 
 
-def create_entity_relation(relation: Relation):
+def create_entity_relation(relations: list[Relation]):
     """Transfers the `relation` to the database."""
-    tail = relation.tail.id
-    head = relation.head.id
-    sources_formatted = "\n\n".join(
-        f"====== Source {i + 1} ======\n\n{s}" for i, s in enumerate(relation.sources)
-    )
 
+    data = list()
+    for relation in relations:
+        tail = relation.tail.id
+        head = relation.head.id
+        sources_formatted = "\n\n".join(
+            f"====== Source {i + 1} ======\n\n{s}"
+            for i, s in enumerate(relation.sources)
+        )
+        as_dict = {
+            "name": str(relation.synset),
+            "sources": sources_formatted,
+            "source_count": len(relation.sources),
+            "tail": tail,
+            "head": head,
+        }
+        data.append(as_dict)
     with Connector.driver() as driver:
         driver.execute_query(
-            """MATCH (t:Entity {id: $tail})
-            MATCH (h:Entity {id: $head})
+            """
+            UNWIND $data AS relation
+            MATCH (t:Entity {id: relation.tail})
+            MATCH (h:Entity {id: relation.head})
             MERGE (t)-[:VERBS {
-                name: $name,
-                sources: $sources,
-                source_count: $source_count
+                name: relation.name,
+                sources: relation.sources,
+                source_count: relation.source_count
             }]->(h)""",
-            name=str(relation.synset),
-            sources=sources_formatted,
-            source_count=len(relation.sources),
-            tail=tail,
-            head=head,
+            data=data,
         )
