@@ -161,5 +161,4 @@ cython_debug/
 
 # User
 temp/
-/sandbox.ipynb
-/sandbox.py
+sandbox*
