@@ -35,7 +35,13 @@ def merge_stanza_to_spacy(stanza_doc: stanza.Document, spacy_doc: Doc) -> None:
     This includes document-level information as well as token-level information.
 
     The spacy `Doc` is modified in-place.
+
+    :raises ValueError:
+        When trying to match documents with different source texts.
     """
+    if stanza_doc.text != spacy_doc.text:
+        raise ValueError("Cannot merge documents with different source texts.")
+
     spacy_doc._.coref_chains = stanza_doc.coref
     for token in spacy_doc:
         token._.stanza_tokens = list()
@@ -58,7 +64,6 @@ if __name__ == "__main__":
         "John Bauer works at Stanford.  He has been there 4 years.",
         "Killer Whales tend to hunt other dolphins. These dolphins often also get hunted by sharks."
     ]
-
 
     _all_sents = " ".join(_sents)
 
