@@ -25,3 +25,4 @@ pytest~=8.2.0
 # Misc
 -e .
 setuptools~=69.0
+black~=24.0
