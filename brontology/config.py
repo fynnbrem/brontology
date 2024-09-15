@@ -25,14 +25,14 @@ class _Model:
 
     @property
     def spacy_model(self) -> Language:
-        """The instance of the model. The model will be created here if it does not exist yet."""
+        """The instance of the spacy model. The model will be loaded here if it hasn't been yet."""
         if self._spacy_model is None:
             self._spacy_model = spacy.load(self.type_)
         return self._spacy_model
 
     @property
     def stanza_model(self) -> Pipeline:
-        """The instance of the model. The model will be created here if it does not exist yet."""
+        """The instance of the stanza model. The model will be loaded here if it hasn't been yet."""
         if self._stanza_model is None:
             self._stanza_model = stanza.Pipeline("en", processors="tokenize,coref")
         return self._stanza_model
