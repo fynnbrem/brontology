@@ -112,7 +112,7 @@ def test_check_passive(title: str, case: PassiveDetectFixtures.case_type):
     sent, expected = case
     expected = set(expected)
     resulted = set()
-    doc = Model.inst(sent)
+    doc = Model.spacy_model(sent)
     for verb in get_verbs(doc):
         resulted.add((verb.lemma_, check_passive(verb)))
     assert expected == resulted, title

@@ -258,7 +258,7 @@ def _extract_lemmas(relation: TokenRelation) -> list[str | None]:
 @pytest.mark.parametrize("title, case", RelationExtractorFixtures.yield_cases())
 def test_extract_relation(title: str, case: RelationExtractorFixtures.case_type):
     case_text, case_result = case
-    relations = get_relations_from_span(Model.inst(case_text))
+    relations = get_relations_from_span(Model.spacy_model(case_text))
 
     relation_lemmas = {tuple(_extract_lemmas(r)) for r in relations}
     case_result = set(case_result)

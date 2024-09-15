@@ -37,7 +37,7 @@ def render_in_web(
     true_docs: list[DocSpan] = list()
     for index, doc in enumerate(docs):
         if isinstance(doc, str):
-            doc = Model.inst(doc)
+            doc = Model.spacy_model(doc)
         true_docs.append(doc)
     del docs
     if titles is None:

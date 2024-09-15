@@ -13,7 +13,7 @@ spacy-lookups-data~=1.0.0
 en-core-web-trf@https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.7.3/en_core_web_trf-3.7.3-py3-none-any.whl#sha256=f72abb34bdf174876bd4267b29b2501677e605e0a251fdc56c163003182ed68b
 transformers~=4.44.0
 stanza~=1.8.0
-
+# en-coreference-web-trf@https://github.com/explosion/spacy-experimental/releases/download/v0.6.1/en_coreference_web_trf-3.4.0a2-py3-none-any.whl
 
 # Database
 neo4j~=5.23.0

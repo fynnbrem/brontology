@@ -26,7 +26,7 @@ class Text:
     def doc(self):
         """The spacy doc generated from the plain text. Lazily loaded."""
         if self._doc is None:
-            self._doc = Model.inst(self.plain)
+            self._doc = Model.spacy_model(self.plain)
         return self._doc
 
 

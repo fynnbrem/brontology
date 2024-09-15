@@ -14,7 +14,7 @@ def main():
     for implementation in SentenceEnum.__subclasses__():
         for member in implementation:
             member: SentenceEnum
-            doc = Model.inst(member.value)
+            doc = Model.spacy_model(member.value)
             member.file.parent.mkdir(parents=True, exist_ok=True)
             doc.to_disk(member.file)
 

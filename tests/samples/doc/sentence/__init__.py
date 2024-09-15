@@ -37,7 +37,7 @@ class SentenceEnum(Enum):
         try:
             return self._doc
         except AttributeError:
-            self._doc = Doc(Model.inst.vocab).from_disk(self.file)
+            self._doc = Doc(Model.spacy_model.vocab).from_disk(self.file)
             return self.doc
 
 
