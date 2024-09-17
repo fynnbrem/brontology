@@ -62,6 +62,8 @@ if __name__ == "__main__":
         "Alice practiced with her new violin yesterday for the first time."
         " She fell in love with the instrument immediately, it seems like she has finally found the one.",
         "Alice and Bob said they like cheese, but he prefers sushi.",
+        "These are my cat-eating dog and lovely cat. They love playing together.",
+        "These are my angry dog and lovely cat. They love playing together.",
     ]
 
     _all_sents = " ".join(_sents)

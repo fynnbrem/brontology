@@ -48,6 +48,12 @@ class CorefChain:
         """All members (representative and non-representative) of the coref chain."""
         return (m for m in chain([self.representative], self.non_representatives))
 
+    def __repr__(self):
+        members = [f'"{m}"' for m in self.members]
+        return (
+            f"<{self.__class__.__qualname__}: {members[0]} | {' '.join(members[1:])}>"
+        )
+
 
 @dataclass
 class CorefAnnotation:

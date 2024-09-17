@@ -4,7 +4,6 @@ from itertools import product
 from typing import Iterable
 
 from spacy.parts_of_speech import PROPN, NOUN, VERB, PRON, ADJ, NUM
-from spacy.tokens import Token
 
 from brontology.relation_extraction.model import TokenRelation
 from brontology.utils.language_utils.conjunct import (
@@ -14,7 +13,7 @@ from brontology.utils.language_utils.conjunct import (
 )
 from brontology.utils.language_utils.participant import get_subj, get_obj
 from brontology.utils.language_utils.voice import check_passive
-from brontology.utils.typing import DocSpan
+from brontology.utils.typing import DocSpan, Token
 
 
 def get_relations_from_span(span: DocSpan) -> list[TokenRelation]:
@@ -25,7 +24,7 @@ def get_relations_from_span(span: DocSpan) -> list[TokenRelation]:
     return relations
 
 
-def _get_conjunct_noun_members(token: Token | None):
+def _get_conjunct_noun_members(token: Token | None) -> list[Token] | list[None]:
     """Gets all members of a noun conjunct. If the `Token` is `None`, this returns a list containing only `None`.
     The members of the conjunct will be filtered to only include valid verb arguments.
     """
@@ -35,7 +34,21 @@ def _get_conjunct_noun_members(token: Token | None):
         return get_conjunct_members(token).get_members_by_pos(
             NOUN, PROPN, NUM, PRON, ADJ
         )
-    # TODO: Once the coreference resolution has been implemented, limit this filter to just noun-likes.
+
+
+def _replace_with_coref(tokens: Iterable[Token]):
+    """Replaces the `tokens` with the representative entity they are co-referring with, if any.
+    Note: This causes duplicates if there are multiple references to the same entity in the `tokens`.
+    """
+    resolved_tokens = list()
+    for token in tokens:
+        coref = token._.coref
+        if coref is not None and not coref.is_representative:
+            coref_tokens = _get_conjunct_noun_members(coref.chain.representative.root)
+            resolved_tokens.extend(coref_tokens)
+        else:
+            resolved_tokens.append(token)
+    return resolved_tokens
 
 
 def _permutate_relation(
@@ -43,12 +56,16 @@ def _permutate_relation(
 ) -> Iterable[tuple[Token | None, Token, Token | None]]:
     """By retrieving the conjuncts of the `subj_token` and the `obj_token`,
     this function will create all permutations of relations this verb has between its tail and head arguments.
+    Coreferences will be resolved in this step.
     """
-    return product(
-        _get_conjunct_noun_members(subj_token),
-        [verb],
-        _get_conjunct_noun_members(obj_token),
-    )
+    all_subjs = _get_conjunct_noun_members(subj_token)
+    if all_subjs != [None]:
+        all_subjs = set(_replace_with_coref(all_subjs))
+
+    all_objs = _get_conjunct_noun_members(obj_token)
+    if all_objs != [None]:
+        all_objs = set(_replace_with_coref(all_objs))
+    return product(all_subjs, [verb], all_objs)
 
 
 def _is_reflexive(token: Token) -> bool:
