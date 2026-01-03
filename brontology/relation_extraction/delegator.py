@@ -10,7 +10,10 @@ from brontology.relation_extraction.relation_types.direct_object import (
 from brontology.relation_extraction.relation_types.passive_voice import (
     extract_passive_voice_relation,
 )
-from brontology.utils.color import A
+from brontology.relation_extraction.relation_types.reflexive_relation import (
+    extract_reflexive_relation,
+)
+from brontology.utils.indev.color import A
 
 PROCESSORS: list[Callable[[Token], TokenRelation | None]] = list()
 
@@ -41,12 +44,13 @@ def extract_relation(verb: Token) -> TokenRelation:
 
 
 add_processor(extract_passive_voice_relation)
+add_processor(extract_reflexive_relation)
 add_processor(extract_direct_object_relation)
 
 if __name__ == "__main__":
     from tests.samples.text import SAMPLE_1 as SAMPLE
     import en_core_web_trf
-    from brontology.utils.spacy import highlight_token_in_span
+    from brontology.utils.indev.prettify import highlight_token_in_span
 
     nlp = en_core_web_trf.load()
     doc = nlp(SAMPLE)

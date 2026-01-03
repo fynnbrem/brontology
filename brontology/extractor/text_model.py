@@ -2,6 +2,7 @@
 
 import webbrowser
 from dataclasses import dataclass, field
+from typing import Union
 
 from spacy.tokens import Doc, Span
 
@@ -12,11 +13,14 @@ from brontology.config import Model
 class Text:
     """Test extracted by the extractor. Stores its source, plaintext and spacy doc."""
 
-    source_link: str
     plain: str
+    source: Union["Source", None] = field(default=None, kw_only=True)
 
     _doc: Doc | None = field(default=None, init=False)
     """The document generated from the plaintext. Use `.doc` for lazy loaded access."""
+
+    def __post_init__(self):
+        self.source.text = self
 
     @property
     def doc(self):
@@ -25,22 +29,31 @@ class Text:
             self._doc = Model.inst(self.plain)
         return self._doc
 
-    def open_source(self):
-        """Opens the source link in the default browser."""
-        webbrowser.open(self.source_link)
+
+@dataclass
+class Source:
+    """A class that represents the source of a `Text`."""
+
+    link: str
+    """The hyperlink to the origin website."""
+    text: Text = field(init=False)
+
+    def open(self):
+        """Opens the link in the default browser."""
+        webbrowser.open(self.link)
 
 
 @dataclass
 class Excerpt:
-    """An excerpt from a document that can be used to display the source of some information."""
+    """An excerpt from a document that can be used to display the exact source of some information."""
 
-    origin: Text
-    slice: slice
+    source: Source
+    slice: tuple[int, int]
 
     @property
     def span(self) -> Span:
         """The span of the excerpt."""
-        return self.origin.doc[self.slice]
+        return self.source.text.doc[self.slice[0] : self.slice[1]]
 
     @property
     def plain(self) -> str:

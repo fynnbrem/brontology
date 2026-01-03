@@ -1,6 +1,7 @@
-from typing import Optional, TypeVar, Iterable, Generic, Type
+from itertools import chain
+from typing import Optional, TypeVar, Iterable, Generic, Type, Generator
 
-from brontology.graph.iterable.node import IterableNode, IterableLink, C
+from brontology.graph.iterable.node import IterableNode, IterableLink
 
 L = TypeVar("L", bound=IterableLink)
 N = TypeVar("N", bound=IterableNode)
@@ -9,9 +10,9 @@ M = TypeVar("M")
 
 class IterableGraph(Generic[N, L, M]):
     """Generic:
-    N = node_type
-    L = link_type
-    M = type of members of node_type and link_type
+    `N` = node_type
+    `L` = link_type
+    `M` = type of members of node_type and link_type
 
     Constructor:
     node_type/link_type: The actual types used to instantiate the objects. Must be the same as specified in the generic.
@@ -21,8 +22,13 @@ class IterableGraph(Generic[N, L, M]):
         self.node_type = node_type
         self.link_type = link_type
 
-        self.nodes: list[C] = list()
+        self.nodes: list[N] = list()
         self.links: list[L] = list()
+
+    @property
+    def relations(self) -> Generator[L, None, None]:
+        """All unique relations within this graph."""
+        return chain.from_iterable(n.outgoing for n in self.nodes)
 
     def add_link_by_member(self, tail: M, link: M, head: M) -> L:
         """Adds a link to graph defined by the head, link and tail members.
@@ -61,7 +67,6 @@ class IterableGraph(Generic[N, L, M]):
         if head_node is None:
             head_node = self.create_node([head])
         # endregion
-
         # region: Create the new link.
         relation_link = self.link_type(tail_node, head_node)
         relation_link.add_member(link)
@@ -74,6 +79,8 @@ class IterableGraph(Generic[N, L, M]):
 
         This does not check for duplicates."""
         node = self.node_type()
+        node.id = str(len(self.nodes))
+
         self.nodes.append(node)
         for member in members:
             node.add_member(member)
